@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+  "version": "0.0.1",
+  "name": "permissions-connector-s2",
+  "description": "Connector of permissions for Source2 SDK",
+  "author": "Fr4nch",
+  "website": "https://github.com/fr0nch",
+  "license": "GPLv3",
+  "entry": "bin/libpermissions-connector-s2",
+  "platforms": [],
+  "language": "golang",
+  "dependencies": [
+    {
+      "name": "permissions"
+    },
+    {
+      "name": "s2sdk"
+    }
+  ],
+  "methods": []
+}
