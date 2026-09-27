@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"permissions-connector-s2/internal/pkg/config"
-	"permissions-connector-s2/internal/pkg/permissions"
 	trs "permissions-connector-s2/internal/pkg/translations"
 	"permissions-connector-s2/internal/pkg/utils"
 
+	permissions "github.com/fr0nch/go-plugify-permissions"
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 	"github.com/fr0nch/logger"
 )
@@ -281,7 +281,7 @@ func (c *Commands) commandReloadConfig(ctx *CommandContext) s2sdk.ResultType {
 	c.config.Settings = cfg
 
 	utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Config reload successfully.")
-	//p.log.Infof("Config reload successfully.")
+	c.log.Infof("Config reload successfully.")
 
 	return s2sdk.ResultType_Continue
 }
@@ -294,7 +294,7 @@ func (c *Commands) commandReloadTranslations(ctx *CommandContext) s2sdk.ResultTy
 	}
 
 	utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Translations reload successfully.")
-	//p.log.Infof("Translations reload successfully.")
+	c.log.Infof("Translations reload successfully.")
 
 	return s2sdk.ResultType_Continue
 }
@@ -302,37 +302,4 @@ func (c *Commands) commandReloadTranslations(ctx *CommandContext) s2sdk.ResultTy
 type CmdSuccessResult struct {
 	Key  string
 	Args []any
-}
-
-func translateCommandResult(caller, target *Player, data GroupOrNode, additional CmdSuccessResult) string {
-	var msg string
-
-	switch data.Result {
-	case permissions.Status_Success:
-		msg = trs.GetTranslation(additional.Key, caller.Language, additional.Args...)
-	case permissions.Status_Allow:
-		msg = trs.GetTranslation("command.permission.allow", caller.Language, target.Name, target.Slot, data.Name)
-	case permissions.Status_Disallow:
-		msg = trs.GetTranslation("command.permission.disallow", caller.Language, target.Name, target.Slot, data.Name)
-	case permissions.Status_PermNotFound:
-		msg = trs.GetTranslation("command.error.permission.not_found", caller.Language)
-	case permissions.Status_GroupNotFound:
-		msg = trs.GetTranslation("command.error.group.not_found", caller.Language, data.Name)
-	case permissions.Status_ChildGroupNotFound:
-		msg = trs.GetTranslation("command.error.group.child_not_found", caller.Language, data.Name)
-	case permissions.Status_ParentGroupNotFound:
-		msg = trs.GetTranslation("command.error.group.parent_not_found", caller.Language, data.Name)
-	case permissions.Status_ActorUserNotFound:
-		msg = trs.GetTranslation("command.error.actor.not_found", caller.Language, target.Name, target.Slot)
-	case permissions.Status_TargetUserNotFound:
-		msg = trs.GetTranslation("command.error.target.not_found", caller.Language, target.Name, target.Slot)
-	case permissions.Status_GroupAlreadyExist:
-		msg = trs.GetTranslation("command.error.group.already_exist", caller.Language, target.Name, target.Slot, data.Name)
-	case permissions.Status_PermAlreadyGranted:
-		msg = trs.GetTranslation("command.error.permission.already_granted", caller.Language, target.Name, target.Slot, data.Name)
-	default:
-		msg = trs.GetTranslation("command.error.unknown", caller.Language)
-	}
-
-	return msg
 }

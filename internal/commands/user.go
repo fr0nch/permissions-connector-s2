@@ -2,12 +2,13 @@ package commands
 
 import (
 	"fmt"
-	"permissions-connector-s2/internal/pkg/permissions"
 	trs "permissions-connector-s2/internal/pkg/translations"
 	"permissions-connector-s2/internal/pkg/utils"
 	"strconv"
 	"strings"
 	"time"
+
+	permissions "github.com/fr0nch/go-plugify-permissions"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 )
@@ -27,12 +28,19 @@ func registerUserCommands(c *Commands) {
 		Description: "command.description.user.info",
 		Example:     "command.example.user.info",
 	})
-	c.addCommand("perms_user_check", CommandInfo{
+	c.addCommand("perms_user_check_permission", CommandInfo{
 		Handler:     c.commandUserPermissionCheck,
-		MinArgs:     1,
+		MinArgs:     2,
 		Permission:  "permissions.user.permission.check",
 		Description: "command.description.user.permission.check",
 		Example:     "command.example.user.permission.check",
+	})
+	c.addCommand("perms_user_check_group", CommandInfo{
+		Handler:     c.commandUserGroupCheck,
+		MinArgs:     2,
+		Permission:  "permissions.user.group.check",
+		Description: "command.description.user.group.check",
+		Example:     "command.example.user.group.check",
 	})
 
 	c.addCommand("perms_user_permissions", CommandInfo{
@@ -149,19 +157,26 @@ func (c *Commands) commandUserInfo(ctx *CommandContext) s2sdk.ResultType {
 
 		clear(data)
 		data = data[:0]
-		for _, perm := range perms {
+		for i := range perms {
+			status := "allow"
+			name := perms[i].Name
+			if name[0] == '-' {
+				status = "disallow"
+				name = name[1:]
+			}
+
 			var expires string
-			if perm.Timestamp > 0 {
-				expires = utils.FormatTimestamp(perm.Timestamp, c.config.Settings.FormatTimestamp)
+			if perms[i].Timestamp > 0 {
+				expires = utils.FormatTimestamp(perms[i].Timestamp, c.config.Settings.FormatTimestamp)
 			} else {
 				expires = "never"
 			}
 
-			data = append(data, []any{perm.Name, expires, perm.Timestamp})
+			data = append(data, []any{name, status, expires, perms[i].Timestamp})
 		}
 
 		utils.PrintConsoleTableToClient(ctx.Caller.Slot, "Permissions",
-			[]string{"name", "expires", "ts"},
+			[]string{"name", "state", "expires", "ts"},
 			data,
 		)
 
@@ -309,12 +324,54 @@ func (c *Commands) commandUserPermissionCheck(ctx *CommandContext) s2sdk.ResultT
 		data.Name = ctx.Args[1]
 		data.Result = permissions.HasPermission(target.SteamID64, data.Name)
 
-		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, translateCommandResult(ctx.Caller, target, data, CmdSuccessResult{}))
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, translateUserCommandResult(ctx.Caller, target, data, CmdSuccessResult{}))
 
 		c.log.Infof("Command: CheckPermission | Result: %v | Actor: %s[%d] | Target: %s[%d]",
 			data.Result,
 			ctx.Caller.Name, ctx.Caller.SteamID64,
 			target.Name, target.SteamID64,
+		)
+	}()
+
+	return s2sdk.ResultType_Continue
+}
+
+func (c *Commands) commandUserGroupCheck(ctx *CommandContext) s2sdk.ResultType {
+	go func() {
+		target, err := findPlayerTarget(ctx)
+		if err != nil {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+			return
+		}
+
+		groupName := ctx.Args[1]
+
+		var timestamp int64
+		result := permissions.HasGroupExtended(target.SteamID64, groupName, &timestamp)
+
+		var msg string
+		switch result {
+		case permissions.Status_PermanentGroup:
+			msg = trs.GetTranslation("command.group.check.has", ctx.Caller.Language, target.Name, target.Slot, groupName)
+		case permissions.Status_TemporalGroup:
+			msg = trs.GetTranslation("command.group.check.has_temporary", ctx.Caller.Language, target.Name, target.Slot, groupName,
+				utils.FormatTimestamp(timestamp, c.config.Settings.FormatTimestamp),
+			)
+		case permissions.Status_GroupNotDefined:
+			msg = trs.GetTranslation("command.error.user.group.not_defined", ctx.Caller.Language, target.Name, target.Slot, groupName)
+		case permissions.Status_GroupNotFound:
+			msg = trs.GetTranslation("command.error.group.not_found", ctx.Caller.Language, groupName)
+		default:
+			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
+		}
+
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
+
+		c.log.Infof("Command: CheckGroup | Result: %v | Actor: %s[%d] | Target: %s[%d] | Group: %s",
+			result,
+			ctx.Caller.Name, ctx.Caller.SteamID64,
+			target.Name, target.SteamID64,
+			groupName,
 		)
 	}()
 
@@ -329,17 +386,17 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 			return
 		}
 
+		var data GroupOrNode
+		data.Name = ctx.Args[1]
+
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.invalid_time", ctx.Caller.Language, ctx.Info.Example))
 			return
 		}
 
-		var data GroupOrNode
-
 		data.Duration = utils.TimeToSeconds(arg2, c.config.Settings.TimeMode)
 
-		data.Name = ctx.Args[1]
 		permCleared := data.Name
 		if data.Name[0] == '-' {
 			data.NewStatus = permissions.Status_Disallow
@@ -348,16 +405,16 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 			data.NewStatus = permissions.Status_Allow
 		}
 
-		if data.Duration > 0 {
-			data.OldStatus = permissions.HasPermissionExtended(target.SteamID64, data.Name, false, &data.PermSource, &data.OldTimestamp)
+		data.OldStatus = permissions.HasPermissionExtended(target.SteamID64, data.Name, false, &data.PermSource, &data.OldTimestamp)
 
+		if data.Duration > 0 {
 			switch data.OldTimestamp {
 			case -1:
 				data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
 			case 0:
 				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-					trs.GetTranslation("command.error.permission.already_granted", ctx.Caller.Language,
-						ctx.Caller.Name, ctx.Caller.Slot, data.Name,
+					trs.GetTranslation("command.error.user.permission.already_granted", ctx.Caller.Language,
+						target.Name, target.Slot, data.Name,
 					),
 				)
 				return
@@ -375,7 +432,7 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 			action = permissions.Action_Replace
 		}
 
-		msg := translateCommandResult(ctx.Caller, target, data,
+		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
 				Key: utils.BuildTranslationPermKey("command.permission", action, data.OldStatus, data.NewStatus, data.OldTimestamp, data.NewTimestamp),
 				Args: func() []any {
@@ -412,6 +469,15 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 		}
 
 		var data GroupOrNode
+		data.Name = ctx.Args[1]
+
+		permCleared := data.Name
+		if data.Name[0] == '-' {
+			data.NewStatus = permissions.Status_Disallow
+			permCleared = permCleared[1:]
+		} else {
+			data.NewStatus = permissions.Status_Allow
+		}
 
 		argCount := len(ctx.Args)
 		if argCount > 2 {
@@ -424,29 +490,19 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 			data.Duration = utils.TimeToSeconds(arg2, c.config.Settings.TimeMode)
 		}
 
-		data.Name = ctx.Args[1]
-		permCleared := data.Name
-		if data.Name[0] == '-' {
-			data.NewStatus = permissions.Status_Disallow
-			permCleared = permCleared[1:]
-		} else {
-			data.NewStatus = permissions.Status_Allow
+		data.OldStatus = permissions.HasPermissionExtended(target.SteamID64, data.Name, false, &data.PermSource, &data.OldTimestamp)
+
+		if data.Duration > 0 {
+			data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
 		}
 
-		data.OldStatus = permissions.HasPermissionExtended(target.SteamID64, data.Name, false, &data.PermSource, &data.OldTimestamp)
-		if data.OldStatus == data.NewStatus && (data.PermSource == permissions.PermSource_User && data.Duration == 0) {
+		if data.OldStatus == data.NewStatus && data.OldTimestamp == data.NewTimestamp && data.PermSource == permissions.PermSource_User {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.already_granted", ctx.Caller.Language,
+				trs.GetTranslation("command.error.user.permission.already_granted", ctx.Caller.Language,
 					target.Name, target.Slot, data.Name,
 				),
 			)
 			return
-		}
-
-		if argCount > 2 && data.Duration > 0 {
-			data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
-		} else {
-			data.NewTimestamp = data.OldTimestamp
 		}
 
 		data.Result = permissions.SetPermission(c.pluginID, target.SteamID64, data.Name, data.NewTimestamp, false)
@@ -458,9 +514,7 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 			action = permissions.Action_Replace
 		}
 
-		var msg string
-
-		translateCommandResult(ctx.Caller, target, data,
+		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
 				Key: utils.BuildTranslationPermKey("command.permission", action, data.OldStatus, data.NewStatus, data.OldTimestamp, data.NewTimestamp),
 				Args: func() []any {
@@ -497,16 +551,21 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 		}
 
 		var data GroupOrNode
-
 		data.Name = ctx.Args[1]
+
+		permCleared := data.Name
+		if data.Name[0] == '-' {
+			permCleared = permCleared[1:]
+		}
+
 		data.OldStatus = permissions.HasPermission(target.SteamID64, data.Name)
 
 		result := permissions.RemovePermission(c.pluginID, target.SteamID64, data.Name, false, false)
 
-		msg := translateCommandResult(ctx.Caller, target, data,
+		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
 				Key:  utils.BuildTranslationPermKey("command.permission", permissions.Action_Remove, data.OldStatus, permissions.Status_PermNotFound, 0, 0),
-				Args: []any{target.Name, target.Slot, data.Name[1:]},
+				Args: []any{target.Name, target.Slot, permCleared},
 			},
 		)
 
@@ -532,6 +591,7 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 		}
 
 		var data GroupOrNode
+		data.Name = ctx.Args[1]
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
@@ -539,18 +599,16 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 			return
 		}
 
+		permissions.HasGroupExtended(target.SteamID64, data.Name, &data.OldTimestamp)
+
 		data.Duration = utils.TimeToSeconds(arg2, c.config.Settings.TimeMode)
-
-		data.Name = ctx.Args[1]
-
 		if data.Duration > 0 {
-			permissions.HasGroupExtended(target.SteamID64, data.Name, &data.OldTimestamp)
 
 			switch data.OldTimestamp {
 			case -1:
 				data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
 			case 0:
-				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.group.already_exist", ctx.Caller.Language, target.Name, target.Slot, data.Name))
+				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.user.group.already_exist", ctx.Caller.Language, target.Name, target.Slot, data.Name))
 				return
 			default:
 				data.NewTimestamp = data.OldTimestamp + int64(data.Duration)
@@ -559,7 +617,7 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 
 		data.Result = permissions.AddGroup(c.pluginID, target.SteamID64, data.Name, data.NewTimestamp, false)
 
-		msg := translateCommandResult(ctx.Caller, target, data,
+		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
 				Key: utils.BuildTranslationGroupKey("command.group", permissions.Action_Add, data.OldTimestamp, data.NewTimestamp),
 				Args: func() []any {
@@ -596,6 +654,7 @@ func (c *Commands) commandUserGroupSet(ctx *CommandContext) s2sdk.ResultType {
 		}
 
 		var data GroupOrNode
+		data.Name = ctx.Args[1]
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
@@ -603,16 +662,16 @@ func (c *Commands) commandUserGroupSet(ctx *CommandContext) s2sdk.ResultType {
 			return
 		}
 
-		data.Duration = utils.TimeToSeconds(arg2, c.config.Settings.TimeMode)
-
-		data.Name = ctx.Args[2]
-		data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
-
 		permissions.HasGroupExtended(target.SteamID64, data.Name, &data.OldTimestamp)
+
+		data.Duration = utils.TimeToSeconds(arg2, c.config.Settings.TimeMode)
+		if data.Duration > 0 {
+			data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
+		}
 
 		data.Result = permissions.AddGroup(c.pluginID, target.SteamID64, data.Name, data.NewTimestamp, false)
 
-		msg := translateCommandResult(ctx.Caller, target, data,
+		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
 				Key: utils.BuildTranslationGroupKey("command.group", permissions.Action_Replace, data.OldTimestamp, data.NewTimestamp),
 				Args: func() []any {
@@ -649,11 +708,10 @@ func (c *Commands) commandUserGroupRemove(ctx *CommandContext) s2sdk.ResultType 
 		}
 
 		var data GroupOrNode
-
-		data.Name = ctx.Args[0]
+		data.Name = ctx.Args[1]
 		data.Result = permissions.RemoveGroup(c.pluginID, target.SteamID64, data.Name, false)
 
-		msg := translateCommandResult(ctx.Caller, target, data,
+		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
 				Key:  utils.BuildTranslationGroupKey("command.group", permissions.Action_Remove, 0, 0),
 				Args: []any{target.Name, target.Slot, data.Name},
@@ -671,4 +729,37 @@ func (c *Commands) commandUserGroupRemove(ctx *CommandContext) s2sdk.ResultType 
 	}()
 
 	return s2sdk.ResultType_Continue
+}
+
+func translateUserCommandResult(caller, target *Player, data GroupOrNode, additional CmdSuccessResult) string {
+	var msg string
+
+	switch data.Result {
+	case permissions.Status_Success:
+		msg = trs.GetTranslation(additional.Key, caller.Language, additional.Args...)
+	case permissions.Status_Allow:
+		msg = trs.GetTranslation("command.error.user.permission.allow", caller.Language, target.Name, target.Slot, data.Name)
+	case permissions.Status_Disallow:
+		msg = trs.GetTranslation("command.error.user.permission.disallow", caller.Language, target.Name, target.Slot, data.Name)
+	case permissions.Status_PermNotFound:
+		msg = trs.GetTranslation("command.error.permission.not_found", caller.Language)
+	case permissions.Status_GroupNotFound:
+		msg = trs.GetTranslation("command.error.group.not_found", caller.Language, data.Name)
+	case permissions.Status_ChildGroupNotFound:
+		msg = trs.GetTranslation("command.error.group.child_not_found", caller.Language, data.Name)
+	case permissions.Status_ParentGroupNotFound:
+		msg = trs.GetTranslation("command.error.group.parent_not_found", caller.Language, data.Name)
+	case permissions.Status_ActorUserNotFound:
+		msg = trs.GetTranslation("command.error.actor.not_found", caller.Language, target.Name, target.Slot)
+	case permissions.Status_TargetUserNotFound:
+		msg = trs.GetTranslation("command.error.target.not_found", caller.Language, target.Name, target.Slot)
+	case permissions.Status_GroupAlreadyExist:
+		msg = trs.GetTranslation("command.error.user.group.already_exist", caller.Language, target.Name, target.Slot, data.Name)
+	case permissions.Status_PermAlreadyGranted:
+		msg = trs.GetTranslation("command.error.user.permission.already_granted", caller.Language, target.Name, target.Slot, data.Name)
+	default:
+		msg = trs.GetTranslation("command.error.unknown", caller.Language)
+	}
+
+	return msg
 }

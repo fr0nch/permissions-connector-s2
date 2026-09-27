@@ -6,7 +6,7 @@ import (
 	"github.com/untrustedmodders/go-plugify"
 )
 
-const pluginName = "permissions-connector-s2"
+const pluginName = "permissions_connector_s2"
 
 func init() {
 	plugin := internal.NewPermsConnectorPlugin()

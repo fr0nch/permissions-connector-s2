@@ -119,10 +119,10 @@ user.permission.replace.wc.permanent:
   ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было расширено до {green}полного доступа {default}до {gold}бессрочно."
   en: ""
 
-## Hint
+### Hint ###
 user.permission.replace.allow.permanent.hint:
   # %[1]s - Permission, %[2]s - Old duration date
-  ru: "Вам было добавлено время к праву <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>бессрочно</font>."
+  ru: "Вам изменили время права <font color='red'>'%[1]s'</font> с <font color='#ebac0c'>%[2]s</font> до <font color='#ebac0c'>бессрочно</font>."
   en: ""
 
 # Temporary
@@ -166,15 +166,325 @@ user.permission.replace.wc.temporary:
   ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было расширено до {green}полного доступа {default}до {green}%[3]s{default}."
   en: ""
 
-## Hint
+### Hint ###
 user.permission.replace.allow.temporary.hint:
   # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
-  ru: "Вам добавили %[4]s к праву <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[3]s</font>."
+  ru: "Вам было изменено время права <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[3]s</font>."
   en: ""
 
 user.permission.replace.disallow.temporary.hint:
   # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам было изменено время запрета на право <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+### Replace (no change) ###
+
+user.permission.replace.disallow.temporary:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам было изменено время запрета на право {red}'%[1]s'{default} с {green}%[2]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.allow.change_state.temporary.added:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с запрета на разрешение и добавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.allow.change_state.temporary.subtracted:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с запрета на разрешение и убавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.disallow.change_state.temporary.added:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с разрешения на запрет и добавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.disallow.change_state.temporary.subtracted:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с разрешения на запрет и убавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+### Replace to wildcard ###
+
+user.permission.replace.wc.allow:
+  # %[1]s - Permission
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было расширено до {green}полного доступа{default}."
+  en: ""
+
+user.permission.replace.wc.allow.change_state:
+  # %[1]s - Permission
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с запрета на {green}полный доступ{default}."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.permanent:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с запрета на {green}полный доступ{default} до {gold}бессрочно{default}."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.temporary:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с запрета на {green}полный доступ{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.temporary.added:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с запрета на {green}полный доступ{default} и добавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.temporary.subtracted:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с запрета на {green}полный доступ{default} и убавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.allow.permanent:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было расширено до {green}полного доступа {default}на {gold}бессрочно{default}."
+  en: ""
+
+user.permission.replace.wc.allow.temporary:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было расширено до {green}полного доступа {default}до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.allow.temporary.added:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было расширено до {green}полного доступа{default}, добавлено {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.allow.temporary.subtracted:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было расширено до {green}полного доступа{default}, убавлено {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.disallow:
+  # %[1]s - Permission
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было заменено на {green}полный запрет{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state:
+  # %[1]s - Permission
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с разрешения на {green}полный запрет{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.permanent:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с разрешения на {green}полный запрет{default} до {gold}бессрочно{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.temporary:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с разрешения на {green}полный запрет{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.temporary.added:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с разрешения на {green}полный запрет{default} и добавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.temporary.subtracted:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Вам изменили статус права {red}'%[1]s'{default} с разрешения на {green}полный запрет{default} и убавили {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.permanent:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было заменено на {green}полный запрет {default}на {gold}бессрочно{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.temporary:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было заменено на {green}полный запрет {default}до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.temporary.added:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было заменено на {green}полный запрет{default}, добавлено {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+user.permission.replace.wc.disallow.temporary.subtracted:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Ваше право {red}'%[1]s'{default} было заменено на {green}полный запрет{default}, убавлено {green}%[4]s{default} до {green}%[3]s{default}."
+  en: ""
+
+### Hint ###
+
+user.permission.replace.allow.change_state.hint:
+  # %[1]s - Permission
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на разрешение."
+  en: ""
+
+user.permission.replace.disallow.change_state.hint:
+  # %[1]s - Permission
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на запрет."
+  en: ""
+
+user.permission.replace.allow.change_state.permanent.hint:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на разрешение до <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.permission.replace.disallow.change_state.permanent.hint:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на запрет до <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.permission.replace.disallow.permanent.hint:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "Вам изменили время запрета на право <font color='red'>'%[1]s'</font> с <font color='#ebac0c'>%[2]s</font> до <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.permission.replace.allow.change_state.temporary.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на разрешение до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.disallow.change_state.temporary.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на запрет до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+### Hint ###
+
+user.permission.replace.allow.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам добавили %[4]s к праву <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.allow.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам убавили %[4]s у права <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.disallow.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
   ru: "Вам добавили %[4]s к запрету на право <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.disallow.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам убавили %[4]s у запрета на право <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.allow.change_state.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на разрешение и добавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.allow.change_state.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на разрешение и убавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.disallow.change_state.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на запрет и добавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.disallow.change_state.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на запрет и убавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+### Hint ###
+
+user.permission.replace.wc.allow.hint:
+  # %[1]s - Permission
+  ru: "Ваше право <font color='red'>'%[1]s'</font> расширено до <font color='#ebac0c'>полного доступа</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.hint:
+  # %[1]s - Permission
+  ru: "Ваше право <font color='red'>'%[1]s'</font> заменено на <font color='#ebac0c'>полный запрет</font>."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.hint:
+  # %[1]s - Permission
+  ru: "Статус права <font color='red'>'%[1]s'</font> изменён с запрета на <font color='#ebac0c'>полный доступ</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.hint:
+  # %[1]s - Permission
+  ru: "Статус права <font color='red'>'%[1]s'</font> изменён с разрешения на <font color='#ebac0c'>полный запрет</font>."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.permanent.hint:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на <font color='#ebac0c'>полный доступ</font> до <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.permanent.hint:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на <font color='#ebac0c'>полный запрет</font> до <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.temporary.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на <font color='#ebac0c'>полный доступ</font> до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.temporary.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на <font color='#ebac0c'>полный запрет</font> до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на <font color='#ebac0c'>полный доступ</font> и добавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на <font color='#ebac0c'>полный запрет</font> и добавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.allow.change_state.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с запрета на <font color='#ebac0c'>полный доступ</font> и убавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.change_state.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Вам изменили статус права <font color='red'>'%[1]s'</font> с разрешения на <font color='#ebac0c'>полный запрет</font> и убавили %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.allow.permanent.hint:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "Ваше право <font color='red'>'%[1]s'</font> расширено до полного доступа на <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.permanent.hint:
+  # %[1]s - Permission, %[2]s - Old duration date
+  ru: "Ваше право <font color='red'>'%[1]s'</font> заменено на полный запрет на <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.permission.replace.wc.allow.temporary.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Ваше право <font color='red'>'%[1]s'</font> расширено до полного доступа до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.temporary.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Ваше право <font color='red'>'%[1]s'</font> заменено на полный запрет до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.allow.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Ваше право <font color='red'>'%[1]s'</font> расширено до полного доступа, добавлено %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.temporary.added.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Ваше право <font color='red'>'%[1]s'</font> заменено на полный запрет, добавлено %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.allow.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Ваше право <font color='red'>'%[1]s'</font> расширено до полного доступа, убавлено %[4]s до <font color='#ebac0c'>%[3]s</font>."
+  en: ""
+
+user.permission.replace.wc.disallow.temporary.subtracted.hint:
+  # %[1]s - Permission, %[2]s - Old duration date, %[3]s - New duration date, %[4]s - Duration
+  ru: "Ваше право <font color='red'>'%[1]s'</font> заменено на полный запрет, убавлено %[4]s до <font color='#ebac0c'>%[3]s</font>."
   en: ""
 
 ### Remove ###
@@ -238,6 +548,16 @@ user.group.add.hint:
   ru: "Вам выдали группу <font color='red'>'%[1]s'</font>."
   en: "You have been added to the group <font color='red'>'%[1]s'</font>."
 
+user.group.add.permanent:
+  # %[1]s - Group name
+  ru: "{darkblue}[Permissions] {default}Вам выдали группу {red}'%[1]s'{default} на {gold}бессрочно{default}."
+  en: "{darkblue}[Permissions] {default}You have been added to the group {red}'%[1]s'{default} permanently."
+
+user.group.add.permanent.hint:
+  # %[1]s - Group name
+  ru: "Вам выдали группу <font color='red'>'%[1]s'</font> на <font color='#ebac0c'>бессрочно</font>."
+  en: "You have been added to the group <font color='red'>'%[1]s'</font> permanently."
+
 # Temporary
 user.group.add.temporary:
   # %[1]s - Group name, %[2]s - Duration
@@ -261,6 +581,43 @@ user.group.replace:
 user.group.replace.temporary:
   # %[1]s - Group name, %[2]s - Old duration time (formatted date), %[3]s - Old duration time (declined date), %[4]s - New duration time (formatted date), %[5]s - New duration (declined date)
   ru: "{darkblue}[Permissions] {default}Вам изменили время действия группы {red}'%[1]s' {default}до {green}%[2]s{default}."
+  en: ""
+
+user.group.replace.permanent:
+  # %[1]s - Group name
+  ru: "{darkblue}[Permissions] {default}Вам изменили время действия группы {red}'%[1]s'{default} до {gold}бессрочно{default}."
+  en: ""
+
+user.group.replace.temporary.added:
+  # %[1]s - Group name, %[2]s - New duration date
+  ru: "{darkblue}[Permissions] {default}Вам продлили время действия группы {red}'%[1]s' {default}до {green}%[2]s{default}."
+  en: ""
+
+user.group.replace.temporary.subtracted:
+  # %[1]s - Group name, %[2]s - New duration date
+  ru: "{darkblue}[Permissions] {default}Вам сократили время действия группы {red}'%[1]s' {default}до {green}%[2]s{default}."
+  en: ""
+
+### Hint ###
+
+user.group.replace.temporary.hint:
+  # %[1]s - Group name, %[2]s - New duration date
+  ru: "Вам изменили время действия группы <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[2]s</font>."
+  en: ""
+
+user.group.replace.permanent.hint:
+  # %[1]s - Group name
+  ru: "Вам изменили время действия группы <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>бессрочно</font>."
+  en: ""
+
+user.group.replace.temporary.added.hint:
+  # %[1]s - Group name, %[2]s - New duration date
+  ru: "Вам продлили время действия группы <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[2]s</font>."
+  en: ""
+
+user.group.replace.temporary.subtracted.hint:
+  # %[1]s - Group name, %[2]s - New duration date
+  ru: "Вам сократили время действия группы <font color='red'>'%[1]s'</font> до <font color='#ebac0c'>%[2]s</font>."
   en: ""
 
 ### Remove ###
@@ -293,14 +650,101 @@ user.group.expired.hint:
 
 ### Permissions ###
 
-command.permission.allow:
-  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission,
-  ru: "{darkblue}[Permissions] {default}У игрока есть право {red}'%[3]s' {default}!"
+# Check (group)
+command.group.check.has:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name
+  ru: "{darkblue}[Permissions] {default}У игрока есть группа {red}'%[3]s' {default}!"
   en: ""
 
-command.permission.disallow:
-  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission,
-  ru: "{darkblue}[Permissions] {default}У игрока есть запрет на право {red}'%[3]s' {default}!"
+command.group.check.has_temporary:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name, %[4]s - Expiry date
+  ru: "{darkblue}[Permissions] {default}У игрока есть группа {red}'%[3]s' {default}до {green}%[4]s{default}!"
+  en: ""
+
+# Check (group permission)
+command.group.permission.allow:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}У группы {red}'%[1]s' {default}есть право {red}'%[2]s' {default}!"
+  en: ""
+
+command.group.permission.disallow:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}У группы {red}'%[1]s' {default}есть запрет на право {red}'%[2]s' {default}!"
+  en: ""
+
+# Check (group parent)
+command.group.parent.check.has:
+  # %[1]s - Child group name, %[2]s - Parent group name
+  ru: "{darkblue}[Permissions] {default}Группа {red}'%[2]s' {default}является родительской для {red}'%[1]s' {default}!"
+  en: ""
+
+command.group.parent.check.has_not:
+  # %[1]s - Child group name, %[2]s - Parent group name
+  ru: "{darkblue}[Permissions] {default}Группа {red}'%[2]s' {default}не является родительской для {red}'%[1]s' {default}!"
+  en: ""
+
+# Info (group parent)
+command.group.parent.info:
+  # %[1]s - Group name, %[2]s - Parent group name
+  ru: "{darkblue}[Permissions] {default}Родительская группа для {red}'%[1]s' {default}- {green}'%[2]s'{default}."
+  en: ""
+
+command.group.parent.info.none:
+  # %[1]s - Group name
+  ru: "{darkblue}[Permissions] {default}У группы {red}'%[1]s' {default}нет родительской группы."
+  en: ""
+
+### Group permissions ###
+
+command.group.permission.add.allow:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно добавлено право {red}'%[2]s'{default}."
+  en: ""
+
+command.group.permission.add.disallow:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно добавлен запрет на право {red}'%[2]s'{default}."
+  en: ""
+
+command.group.permission.set.allow:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно установлено право {red}'%[2]s'{default}."
+  en: ""
+
+command.group.permission.set.disallow:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно установлен запрет на право {red}'%[2]s'{default}."
+  en: ""
+
+# Wildcard
+command.group.permission.add.wc.allow:
+  # %[1]s - Group name, %[2]s - Permission prefix (without the trailing .*)
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно добавлен {green}полный доступ {default}к {red}'%[2]s'{default}."
+  en: ""
+
+command.group.permission.add.wc.disallow:
+  # %[1]s - Group name, %[2]s - Permission prefix (without the trailing .*)
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно добавлен {green}полный запрет {default}на {red}'%[2]s'{default}."
+  en: ""
+
+command.group.permission.set.wc.allow:
+  # %[1]s - Group name, %[2]s - Permission prefix (without the trailing .*)
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно установлен {green}полный доступ {default}к {red}'%[2]s'{default}."
+  en: ""
+
+command.group.permission.set.wc.disallow:
+  # %[1]s - Group name, %[2]s - Permission prefix (without the trailing .*)
+  ru: "{darkblue}[Permissions] {default}Группе {red}'%[1]s' {default}успешно установлен {green}полный запрет {default}на {red}'%[2]s'{default}."
+  en: ""
+
+command.group.permission.remove.success:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}У группы {red}'%[1]s' {default}успешно удалено право {red}'%[2]s'{default}."
+  en: ""
+
+command.error.group.permission.already_granted:
+  # %[1]s - Group name, %[2]s - Permission
+  ru: "{darkblue}[Permissions] {default}У группы {red}'%[1]s' {default}уже есть право {red}'%[2]s'{default}!"
   en: ""
 
 # Add
@@ -355,6 +799,97 @@ command.permission.set.disallow.temporary:
   ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно установлен запрет права {red}'%[3]s' {default}до {green}%[4]s{default}."
   en: ""
 
+# Replace
+command.permission.replace.allow.change_state:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно изменён статус права {red}'%[3]s' {default}с запрета на разрешение."
+  en: ""
+
+command.permission.replace.disallow.change_state:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно изменён статус права {red}'%[3]s' {default}с разрешения на запрет."
+  en: ""
+
+command.permission.replace.allow.change_state.permanent:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно изменён статус права {red}'%[3]s' {default}с запрета на разрешение на {gold}бессрочно{default}."
+  en: ""
+
+command.permission.replace.disallow.change_state.permanent:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно изменён статус права {red}'%[3]s' {default}с разрешения на запрет на {gold}бессрочно{default}."
+  en: ""
+
+command.permission.replace.allow.change_state.temporary:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно изменён статус права {red}'%[3]s' {default}с запрета на разрешение до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.disallow.change_state.temporary:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно изменён статус права {red}'%[3]s' {default}с разрешения на запрет до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.allow.change_state.temporary.added:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] статус права {red}'%[3]s' {default}изменён с запрета на разрешение, время увеличено до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.disallow.change_state.temporary.added:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] статус права {red}'%[3]s' {default}изменён с разрешения на запрет, время увеличено до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.allow.change_state.temporary.subtracted:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] статус права {red}'%[3]s' {default}изменён с запрета на разрешение, время уменьшено до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.disallow.change_state.temporary.subtracted:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] статус права {red}'%[3]s' {default}изменён с разрешения на запрет, время уменьшено до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.allow.permanent:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно установлено право {red}'%[3]s' {default}на {gold}бессрочно{default}."
+  en: ""
+
+command.permission.replace.disallow.permanent:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно установлен запрет права {red}'%[3]s' {default}на {gold}бессрочно{default}."
+  en: ""
+
+command.permission.replace.allow.temporary:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно установлено право {red}'%[3]s' {default}до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.disallow.temporary:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] успешно установлен запрет права {red}'%[3]s' {default}до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.allow.temporary.added:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] продлено право {red}'%[3]s' {default}до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.disallow.temporary.added:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] продлён запрет права {red}'%[3]s' {default}до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.allow.temporary.subtracted:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] сокращено время права {red}'%[3]s' {default}до {green}%[4]s{default}."
+  en: ""
+
+command.permission.replace.disallow.temporary.subtracted:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission, %[4]s - Duration date
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s [%[2]d] сокращено время запрета права {red}'%[3]s' {default}до {green}%[4]s{default}."
+  en: ""
+
 # Remove
 command.permission.remove.allow:
   ru: "{darkblue}[Permissions] {default}У игрока %s[%d] успешно забрано право '%s'."
@@ -386,6 +921,27 @@ command.group.set.permanent:
 command.group.set.temporary:
   # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name, %[4]s - Duration
   ru: "{darkblue}[Permissions] {default}Игроку %[1]s[%[2]d] установлена {red}'%[3]s' {default}группа до {green}%[4]s{default}."
+  en: ""
+
+# Replace
+command.group.replace.permanent:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s[%[2]d] установлена {red}'%[3]s' {default}группа на {gold}бессрочно{default}."
+  en: ""
+
+command.group.replace.temporary:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s[%[2]d] установлена {red}'%[3]s' {default}группа до {green}%[4]s{default}."
+  en: ""
+
+command.group.replace.temporary.added:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s[%[2]d] продлена {red}'%[3]s' {default}группа до {green}%[4]s{default}."
+  en: ""
+
+command.group.replace.temporary.subtracted:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name, %[4]s - Duration
+  ru: "{darkblue}[Permissions] {default}Игроку %[1]s[%[2]d] сокращено время группы {red}'%[3]s' {default}до {green}%[4]s{default}."
   en: ""
 
 # Remove
@@ -420,8 +976,12 @@ command.example.user.list:
   ru: "perms_users"
 
 command.example.user.permission.check:
-  ru: "perms_check_permission <#userid|$steamid64|&account_id|имя_игрока> <право>"
-  en: "perms_check_permission <#userid|$steamid64|&account_id|name> <permission>"
+  ru: "perms_user_check_permission <#userid|$steamid64|&account_id|имя_игрока> <право>"
+  en: "perms_user_check_permission <#userid|$steamid64|&account_id|name> <permission>"
+
+command.example.user.group.check:
+  ru: "perms_user_check_group <#userid|$steamid64|&account_id|имя_игрока> <группа>"
+  en: "perms_user_check_group <#userid|$steamid64|&account_id|name> <group_name>"
 
 command.example.user.permission.info:
   ru: "perms_user_permissions <#userid|$steamid64|&account_id|имя_игрока>"
@@ -466,8 +1026,12 @@ command.example.group.permissions:
   ru: "perms_group_permissions <название_группы>"
   en: "perms_group_permissions <group_name>"
 
+command.example.group.permission.check:
+  ru: "perms_group_check_permission <название_группы> <право>"
+  en: "perms_group_check_permission <group_name> <permission>"
+
 command.example.creategroup:
-  ru: "perms_creategroup <название_группы> <приоритет> <родительская_группа> <права> (через пробел)"
+  ru: "perms_creategroup <название_группы> <приоритет> <родительская_группа> <права> (через пробел в кавычках \"bhop doublejumps trowknife\")"
   en: "perms_creategroup <group_name> <priority> <parent_group> <permissions> (space separated)"
 
 command.example.deletegroup:
@@ -478,6 +1042,26 @@ command.example.group.parent.set:
   ru: "perms_group_parent_set <дочерняя_группа> <родительская_группа>"
   en: "perms_group_parent_set <child_group> <parent_group>"
 
+command.example.group.parent.info:
+  ru: "perms_group_parent_info <название_группы>"
+  en: "perms_group_parent_info <group_name>"
+
+command.example.group.parent.check:
+  ru: "perms_group_parent_check <дочерняя_группа> <родительская_группа>"
+  en: "perms_group_parent_check <child_group> <parent_group>"
+
+command.example.group.permission.add:
+  ru: "perms_group_add_permission <название_группы> <право>"
+  en: "perms_group_add_permission <group_name> <permission>"
+
+command.example.group.permission.set:
+  ru: "perms_group_set_permission <название_группы> <право>"
+  en: "perms_group_set_permission <group_name> <permission>"
+
+command.example.group.permission.remove:
+  ru: "perms_group_remove_permission <название_группы> <право>"
+  en: "perms_group_remove_permission <group_name> <permission>"
+
 command.example.perms:
   ru: "perms"
 
@@ -486,6 +1070,9 @@ command.example.reload_config:
 
 command.example.reload_translations:
   ru: "perms_reload_translations"
+
+command.example.test:
+  ru: "perms_test"
 
 ### Descriptions ###
 
@@ -497,6 +1084,9 @@ command.description.user.list:
 
 command.description.user.permission.check:
   ru: "Проверяет есть ли у игрока право/запрет."
+
+command.description.user.group.check:
+  ru: "Проверяет состоит ли игрок в группе."
 
 command.description.user.permission.info:
   ru: "Показывает права и запреты игрока."
@@ -531,6 +1121,9 @@ command.description.group.info:
 command.description.group.permissions:
   ru: "Показывает список прав группы."
 
+command.description.group.permission.check:
+  ru: "Проверяет есть ли у группы право/запрет."
+
 command.description.creategroup:
   ru: "Создаёт новую группу."
 
@@ -539,6 +1132,21 @@ command.description.deletegroup:
 
 command.description.group.parent.set:
   ru: "Устанавливает родительскую группу для указанной группы."
+
+command.description.group.parent.info:
+  ru: "Показывает родительскую группу указанной группы."
+
+command.description.group.parent.check:
+  ru: "Проверяет, является ли указанная группа родительской для другой."
+
+command.description.group.permission.add:
+  ru: "Добавляет право группе."
+
+command.description.group.permission.set:
+  ru: "Устанавливает право группе."
+
+command.description.group.permission.remove:
+  ru: "Удаляет право у группы."
 
 command.description.info:
   ru: "Показывает список доступных команд плагина пермишенов."
@@ -549,7 +1157,20 @@ command.description.reload_config:
 command.description.reload_translations:
   ru: "Перезагружает список переводов плагина пермишенов."
 
+command.description.test:
+  ru: "Прогоняет тестовые сценарии команд пермишенов на себе (изменяет реальные права/группы!)."
+
 ### Errors ###
+
+command.error.user.permission.allow:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission,
+  ru: "{darkblue}[Permissions] {default}У игрока уже есть право {red}'%[3]s' {default}!"
+  en: ""
+
+command.error.user.permission.disallow:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission,
+  ru: "{darkblue}[Permissions] {default}У игрока уже есть запрет на право {red}'%[3]s' {default}!"
+  en: ""
 
 command.error.unknown:
   ru: "{darkblue}[Permissions] {default}Неизвестная ошибка, см. в файле лога."
@@ -601,7 +1222,7 @@ command.error.permission.not_found:
   ru: "{darkblue}[Permissions] {default}Право не найдено!"
   en: ""
 
-command.error.permission.already_granted:
+command.error.user.permission.already_granted:
   # %[1]s - Player name, %[2]d - Player slot, %[3]s - Permission
   ru: "{darkblue}[Permissions] {default}У игрока %[1]s[%[2]d] уже есть право %[3]s!"
   en: ""
@@ -626,9 +1247,14 @@ command.error.creategroup.already_exist:
   ru: "{darkblue}[Permissions] {default}Группа {red}'%[1]s' {default}уже существует."
   en: "{darkblue}[Permissions] {default}Group {red}'%[1]s' {default}already exists."
 
-command.error.group.already_exist:
+command.error.user.group.already_exist:
   # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name
   ru: "{darkblue}[Permissions] {default}У игрока %[1]s[%[2]d] уже есть {red}'%[3]s' {default}группа."
+  en: ""
+
+command.error.user.group.not_defined:
+  # %[1]s - Player name, %[2]d - Player slot, %[3]s - Group name
+  ru: "{darkblue}[Permissions] {default}У игрока нет группы {red}'%[3]s'{default}!"
   en: ""
 
 command.error.no_available_commands:

@@ -1,9 +1,10 @@
 package internal
 
 import (
-	"permissions-connector-s2/internal/pkg/permissions"
 	"permissions-connector-s2/internal/pkg/utils"
 	"strings"
+
+	permissions "github.com/fr0nch/go-plugify-permissions"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 )
@@ -41,6 +42,8 @@ func (p *PermsConnectorPlugin) OnMapEnd() {
 }
 
 func (p *PermsConnectorPlugin) OnClientAuthenticated(playerSlot int32, steamID uint64) {
+	p.log.Debugf("Client %s authenticated", s2sdk.GetClientName(playerSlot))
+
 	if s2sdk.IsFakeClient(playerSlot) || s2sdk.IsClientSourceTV(playerSlot) {
 		return
 	}
