@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"permissions-connector-s2/internal/pkg/config"
-	"permissions-connector-s2/internal/pkg/permissions"
 	"permissions-connector-s2/internal/pkg/translations"
 	"slices"
 	"strconv"
@@ -14,6 +13,8 @@ import (
 	"text/tabwriter"
 	"time"
 	"unicode/utf8"
+
+	permissions "github.com/fr0nch/go-plugify-permissions"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 )
