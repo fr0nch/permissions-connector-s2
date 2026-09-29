@@ -492,42 +492,45 @@ func (c *Commands) commandGroupPermissionCheck(ctx *CommandContext) s2sdk.Result
 	return s2sdk.ResultType_Continue
 }
 
-// buildGroupPermissionActionKey resolves the translation key for the result of
-// AddPermissionGroup/SetPermissionGroup, given the "command.group.permission.add"
-// or "command.group.permission.set" prefix.
-func buildGroupPermissionActionKey(prefix string, result permissions.Status, wildcard bool, disallow bool) string {
+// groupPermissionActionMsg builds the reply for the result of AddPermissionGroup/SetPermissionGroup,
+// given the "command.group.permission.add" or "command.group.permission.set" prefix.
+func groupPermissionActionMsg(lang string, prefix string, result permissions.Status, wildcard bool, disallow bool, group string, perm string) string {
 	switch result {
 	case permissions.Status_Success:
+		key := prefix + ".allow"
 		switch {
 		case wildcard && disallow:
-			return prefix + ".wc.disallow"
+			key = prefix + ".wc.disallow"
 		case wildcard:
-			return prefix + ".wc.allow"
+			key = prefix + ".wc.allow"
 		case disallow:
-			return prefix + ".disallow"
-		default:
-			return prefix + ".allow"
+			key = prefix + ".disallow"
 		}
+		return t.TranslateFormat(lang, key, []any{group, perm})
 	case permissions.Status_GroupNotFound:
-		return "command.error.group.not_found"
+		return t.TranslateFormat(lang, "command.error.group.not_found", []any{group})
 	case permissions.Status_PermAlreadyGranted:
-		return "command.error.group.permission.already_granted"
+		return t.TranslateFormat(lang, "command.error.group.permission.already_granted", []any{group, perm})
+	case permissions.Status_InvalidPermission:
+		return t.Translate(lang, "command.error.permission.invalid")
 	default:
-		return "command.error.unknown"
+		return t.Translate(lang, "command.error.unknown")
 	}
 }
 
-// buildGroupPermissionRemoveKey resolves the translation key for the result of RemovePermissionGroup.
-func buildGroupPermissionRemoveKey(result permissions.Status) string {
+// groupPermissionRemoveMsg builds the reply for the result of RemovePermissionGroup.
+func groupPermissionRemoveMsg(lang string, result permissions.Status, group string, perm string) string {
 	switch result {
 	case permissions.Status_Success:
-		return "command.group.permission.remove.success"
+		return t.TranslateFormat(lang, "command.group.permission.remove.success", []any{group, perm})
 	case permissions.Status_GroupNotFound:
-		return "command.error.group.not_found"
+		return t.TranslateFormat(lang, "command.error.group.not_found", []any{group})
 	case permissions.Status_PermNotFound:
-		return "command.error.permission.not_found"
+		return t.Translate(lang, "command.error.permission.not_found")
+	case permissions.Status_InvalidPermission:
+		return t.Translate(lang, "command.error.permission.invalid")
 	default:
-		return "command.error.unknown"
+		return t.Translate(lang, "command.error.unknown")
 	}
 }
 
@@ -563,8 +566,7 @@ func (c *Commands) commandGroupPermissionAdd(ctx *CommandContext) s2sdk.ResultTy
 
 		result := permissions.AddPermissionGroup(c.pluginID, groupName, permName, false)
 
-		key := buildGroupPermissionActionKey("command.group.permission.add", result, wildcard, disallow)
-		msg := t.TranslateFormat(ctx.Caller.Language, key, []any{groupName, permCleared})
+		msg := groupPermissionActionMsg(ctx.Caller.Language, "command.group.permission.add", result, wildcard, disallow, groupName, permCleared)
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 
@@ -611,8 +613,7 @@ func (c *Commands) commandGroupPermissionSet(ctx *CommandContext) s2sdk.ResultTy
 
 		result := permissions.SetPermissionGroup(c.pluginID, groupName, permName, false)
 
-		key := buildGroupPermissionActionKey("command.group.permission.set", result, wildcard, disallow)
-		msg := t.TranslateFormat(ctx.Caller.Language, key, []any{groupName, permCleared})
+		msg := groupPermissionActionMsg(ctx.Caller.Language, "command.group.permission.set", result, wildcard, disallow, groupName, permCleared)
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 
@@ -653,8 +654,7 @@ func (c *Commands) commandGroupPermissionRemove(ctx *CommandContext) s2sdk.Resul
 
 		result := permissions.RemovePermissionGroup(c.pluginID, groupName, permName, false, false)
 
-		key := buildGroupPermissionRemoveKey(result)
-		msg := t.TranslateFormat(ctx.Caller.Language, key, []any{groupName, permCleared})
+		msg := groupPermissionRemoveMsg(ctx.Caller.Language, result, groupName, permCleared)
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 

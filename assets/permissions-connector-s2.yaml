@@ -1221,6 +1221,10 @@ command.error.permission.not_found:
   ru: "{darkblue}[Permissions] {default}Право не найдено!"
   en: ""
 
+command.error.permission.invalid:
+  ru: "{darkblue}[Permissions] {default}Некорректное право!"
+  en: "{darkblue}[Permissions] {default}Invalid permission!"
+
 command.error.permission.empty:
   # {0} - Command example
   ru: "{{darkblue}}[Permissions] {{default}}Право не может быть пустым. Пример: {0}."

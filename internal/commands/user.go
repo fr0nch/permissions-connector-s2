@@ -795,6 +795,10 @@ func translateUserCommandResult(caller, target *Player, data GroupOrNode, additi
 		msg = t.TranslateFormat(caller.Language, "command.error.user.permission.disallow", []any{target.Name, target.Slot, data.Name})
 	case permissions.Status_PermNotFound:
 		msg = t.Translate(caller.Language, "command.error.permission.not_found")
+	case permissions.Status_InvalidPermission:
+		msg = t.Translate(caller.Language, "command.error.permission.invalid")
+	case permissions.Status_GroupNotDefined:
+		msg = t.TranslateFormat(caller.Language, "command.error.user.group.not_defined", []any{target.Name, target.Slot, data.Name})
 	case permissions.Status_GroupNotFound:
 		msg = t.TranslateFormat(caller.Language, "command.error.group.not_found", []any{data.Name})
 	case permissions.Status_ChildGroupNotFound:
