@@ -590,7 +590,7 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 
 		data.OldStatus = permissions.HasPermission(target.SteamID64, data.Name)
 
-		result := permissions.RemovePermission(c.pluginID, target.SteamID64, data.Name, false, false)
+		data.Result = permissions.RemovePermission(c.pluginID, target.SteamID64, data.Name, false, false)
 
 		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
@@ -602,7 +602,7 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 
 		c.log.Infof("Command: RemovePermission | Result: %v | Actor: %s[%d] | Target: %s[%d] | Perm: %s",
-			result,
+			data.Result,
 			ctx.Caller.Name, ctx.Caller.SteamID64,
 			target.Name, target.SteamID64,
 			data.Name,
