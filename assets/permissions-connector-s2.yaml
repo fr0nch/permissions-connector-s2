@@ -1242,6 +1242,11 @@ command.error.group.parent_not_found:
   ru: "{darkblue}[Permissions] {default}Основная группа {red}'%[1]s' {default}не найдена."
   en: ""
 
+command.error.group.hierarchy_cycle:
+  # %[1]s - Child group, %[2]s - Parent group
+  ru: "{darkblue}[Permissions] {default}Нельзя назначить группу {red}'%[2]s' {default}родителем группы {red}'%[1]s'{default}."
+  en: ""
+
 command.error.creategroup.already_exist:
   # %[1]s - Group name
   ru: "{darkblue}[Permissions] {default}Группа {red}'%[1]s' {default}уже существует."

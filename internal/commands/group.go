@@ -248,6 +248,8 @@ func (c *Commands) commandGroupParentSet(ctx *CommandContext) s2sdk.ResultType {
 			msg = trs.GetTranslation("command.error.group.child_not_found", ctx.Caller.Language, childName)
 		case permissions.Status_ParentGroupNotFound:
 			msg = trs.GetTranslation("command.error.group.parent_not_found", ctx.Caller.Language, parentName)
+		case permissions.Status_GroupHierarchyCycle:
+			msg = trs.GetTranslation("command.error.group.hierarchy_cycle", ctx.Caller.Language, childName, parentName)
 		default:
 			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
 		}
