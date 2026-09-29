@@ -322,6 +322,15 @@ func (c *Commands) commandUserPermissionCheck(ctx *CommandContext) s2sdk.ResultT
 
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
+
+		if strings.TrimSpace(data.Name) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
+
 		data.Result = permissions.HasPermission(target.SteamID64, data.Name)
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, translateUserCommandResult(ctx.Caller, target, data, CmdSuccessResult{}))
@@ -345,6 +354,14 @@ func (c *Commands) commandUserGroupCheck(ctx *CommandContext) s2sdk.ResultType {
 		}
 
 		groupName := ctx.Args[1]
+
+		if strings.TrimSpace(groupName) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
 
 		var timestamp int64
 		result := permissions.HasGroupExtended(target.SteamID64, groupName, &timestamp)
@@ -388,6 +405,14 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
+
+		if strings.TrimSpace(data.Name) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
@@ -471,6 +496,14 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
+		if strings.TrimSpace(data.Name) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
+
 		permCleared := data.Name
 		if strings.HasPrefix(data.Name, "-") {
 			data.NewStatus = permissions.Status_Disallow
@@ -553,6 +586,14 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
+		if strings.TrimSpace(data.Name) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
+
 		permCleared := data.Name
 		if strings.HasPrefix(data.Name, "-") {
 			permCleared = permCleared[1:]
@@ -592,6 +633,14 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
+
+		if strings.TrimSpace(data.Name) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
@@ -656,6 +705,14 @@ func (c *Commands) commandUserGroupSet(ctx *CommandContext) s2sdk.ResultType {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
+		if strings.TrimSpace(data.Name) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
+
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.invalid_time", ctx.Caller.Language, ctx.Info.Example))
@@ -709,6 +766,15 @@ func (c *Commands) commandUserGroupRemove(ctx *CommandContext) s2sdk.ResultType 
 
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
+
+		if strings.TrimSpace(data.Name) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
+					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+			)
+			return
+		}
+
 		data.Result = permissions.RemoveGroup(c.pluginID, target.SteamID64, data.Name, false)
 
 		msg := translateUserCommandResult(ctx.Caller, target, data,
