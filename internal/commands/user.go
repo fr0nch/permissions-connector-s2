@@ -2,13 +2,13 @@ package commands
 
 import (
 	"fmt"
-	trs "permissions-connector-s2/internal/pkg/translations"
 	"permissions-connector-s2/internal/pkg/utils"
 	"strconv"
 	"strings"
 	"time"
 
 	permissions "github.com/fr0nch/go-plugify-permissions"
+	t "github.com/fr0nch/go-plugify-translations"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 )
@@ -297,11 +297,10 @@ func (c *Commands) commandUserGroups(ctx *CommandContext) s2sdk.ResultType {
 			for _, group := range parsed {
 				var msg string
 				if group.Timestamp > 0 {
-					msg = trs.GetTranslation("user.loaded.active_groups.temporary", ctx.Caller.Language, group.Name,
-						utils.FormatTimestamp(group.Timestamp, c.config.Settings.FormatTimestamp),
-					)
+					msg = t.TranslateFormat(ctx.Caller.Language, "user.loaded.active_groups.temporary", []any{group.Name,
+						utils.FormatTimestamp(group.Timestamp, c.config.Settings.FormatTimestamp)})
 				} else {
-					msg = trs.GetTranslation("user.loaded.active_groups.permanent", ctx.Caller.Language, group.Name)
+					msg = t.TranslateFormat(ctx.Caller.Language, "user.loaded.active_groups.permanent", []any{group.Name})
 				}
 
 				s2sdk.PrintToChatColored(ctx.Caller.Slot, msg)
@@ -325,8 +324,7 @@ func (c *Commands) commandUserPermissionCheck(ctx *CommandContext) s2sdk.ResultT
 
 		if strings.TrimSpace(data.Name) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -357,8 +355,7 @@ func (c *Commands) commandUserGroupCheck(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -369,17 +366,16 @@ func (c *Commands) commandUserGroupCheck(ctx *CommandContext) s2sdk.ResultType {
 		var msg string
 		switch result {
 		case permissions.Status_PermanentGroup:
-			msg = trs.GetTranslation("command.group.check.has", ctx.Caller.Language, target.Name, target.Slot, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.check.has", []any{target.Name, target.Slot, groupName})
 		case permissions.Status_TemporalGroup:
-			msg = trs.GetTranslation("command.group.check.has_temporary", ctx.Caller.Language, target.Name, target.Slot, groupName,
-				utils.FormatTimestamp(timestamp, c.config.Settings.FormatTimestamp),
-			)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.check.has_temporary", []any{target.Name, target.Slot, groupName,
+				utils.FormatTimestamp(timestamp, c.config.Settings.FormatTimestamp)})
 		case permissions.Status_GroupNotDefined:
-			msg = trs.GetTranslation("command.error.user.group.not_defined", ctx.Caller.Language, target.Name, target.Slot, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.user.group.not_defined", []any{target.Name, target.Slot, groupName})
 		case permissions.Status_GroupNotFound:
-			msg = trs.GetTranslation("command.error.group.not_found", ctx.Caller.Language, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName})
 		default:
-			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
 		}
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
@@ -408,15 +404,14 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 
 		if strings.TrimSpace(data.Name) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.invalid_time", ctx.Caller.Language, ctx.Info.Example))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
 			return
 		}
 
@@ -438,9 +433,7 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 				data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
 			case 0:
 				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-					trs.GetTranslation("command.error.user.permission.already_granted", ctx.Caller.Language,
-						target.Name, target.Slot, data.Name,
-					),
+					t.TranslateFormat(ctx.Caller.Language, "command.error.user.permission.already_granted", []any{target.Name, target.Slot, data.Name}),
 				)
 				return
 			default:
@@ -498,8 +491,7 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 
 		if strings.TrimSpace(data.Name) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -516,7 +508,7 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 		if argCount > 2 {
 			arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 			if err != nil {
-				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.invalid_time", ctx.Caller.Language, ctx.Info.Example))
+				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
 				return
 			}
 
@@ -531,9 +523,7 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 
 		if data.OldStatus == data.NewStatus && data.OldTimestamp == data.NewTimestamp && data.PermSource == permissions.PermSource_User {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.user.permission.already_granted", ctx.Caller.Language,
-					target.Name, target.Slot, data.Name,
-				),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.user.permission.already_granted", []any{target.Name, target.Slot, data.Name}),
 			)
 			return
 		}
@@ -588,8 +578,7 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 
 		if strings.TrimSpace(data.Name) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -636,15 +625,14 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(data.Name) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.invalid_time", ctx.Caller.Language, ctx.Info.Example))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
 			return
 		}
 
@@ -657,7 +645,7 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 			case -1:
 				data.NewTimestamp = time.Now().Unix() + int64(data.Duration)
 			case 0:
-				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.user.group.already_exist", ctx.Caller.Language, target.Name, target.Slot, data.Name))
+				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.user.group.already_exist", []any{target.Name, target.Slot, data.Name}))
 				return
 			default:
 				data.NewTimestamp = data.OldTimestamp + int64(data.Duration)
@@ -707,15 +695,14 @@ func (c *Commands) commandUserGroupSet(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(data.Name) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.invalid_time", ctx.Caller.Language, ctx.Info.Example))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
 			return
 		}
 
@@ -769,8 +756,7 @@ func (c *Commands) commandUserGroupRemove(ctx *CommandContext) s2sdk.ResultType 
 
 		if strings.TrimSpace(data.Name) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -802,29 +788,29 @@ func translateUserCommandResult(caller, target *Player, data GroupOrNode, additi
 
 	switch data.Result {
 	case permissions.Status_Success:
-		msg = trs.GetTranslation(additional.Key, caller.Language, additional.Args...)
+		msg = t.TranslateFormat(caller.Language, additional.Key, additional.Args)
 	case permissions.Status_Allow:
-		msg = trs.GetTranslation("command.error.user.permission.allow", caller.Language, target.Name, target.Slot, data.Name)
+		msg = t.TranslateFormat(caller.Language, "command.error.user.permission.allow", []any{target.Name, target.Slot, data.Name})
 	case permissions.Status_Disallow:
-		msg = trs.GetTranslation("command.error.user.permission.disallow", caller.Language, target.Name, target.Slot, data.Name)
+		msg = t.TranslateFormat(caller.Language, "command.error.user.permission.disallow", []any{target.Name, target.Slot, data.Name})
 	case permissions.Status_PermNotFound:
-		msg = trs.GetTranslation("command.error.permission.not_found", caller.Language)
+		msg = t.Translate(caller.Language, "command.error.permission.not_found")
 	case permissions.Status_GroupNotFound:
-		msg = trs.GetTranslation("command.error.group.not_found", caller.Language, data.Name)
+		msg = t.TranslateFormat(caller.Language, "command.error.group.not_found", []any{data.Name})
 	case permissions.Status_ChildGroupNotFound:
-		msg = trs.GetTranslation("command.error.group.child_not_found", caller.Language, data.Name)
+		msg = t.TranslateFormat(caller.Language, "command.error.group.child_not_found", []any{data.Name})
 	case permissions.Status_ParentGroupNotFound:
-		msg = trs.GetTranslation("command.error.group.parent_not_found", caller.Language, data.Name)
+		msg = t.TranslateFormat(caller.Language, "command.error.group.parent_not_found", []any{data.Name})
 	case permissions.Status_ActorUserNotFound:
-		msg = trs.GetTranslation("command.error.actor.not_found", caller.Language, target.Name, target.Slot)
+		msg = t.Translate(caller.Language, "command.error.actor.not_found")
 	case permissions.Status_TargetUserNotFound:
-		msg = trs.GetTranslation("command.error.target.not_found", caller.Language, target.Name, target.Slot)
+		msg = t.TranslateFormat(caller.Language, "command.error.target.not_found", []any{target.Name, target.Slot})
 	case permissions.Status_GroupAlreadyExist:
-		msg = trs.GetTranslation("command.error.user.group.already_exist", caller.Language, target.Name, target.Slot, data.Name)
+		msg = t.TranslateFormat(caller.Language, "command.error.user.group.already_exist", []any{target.Name, target.Slot, data.Name})
 	case permissions.Status_PermAlreadyGranted:
-		msg = trs.GetTranslation("command.error.user.permission.already_granted", caller.Language, target.Name, target.Slot, data.Name)
+		msg = t.TranslateFormat(caller.Language, "command.error.user.permission.already_granted", []any{target.Name, target.Slot, data.Name})
 	default:
-		msg = trs.GetTranslation("command.error.unknown", caller.Language)
+		msg = t.Translate(caller.Language, "command.error.unknown")
 	}
 
 	return msg

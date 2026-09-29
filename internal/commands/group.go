@@ -2,12 +2,12 @@ package commands
 
 import (
 	"fmt"
-	trs "permissions-connector-s2/internal/pkg/translations"
 	"permissions-connector-s2/internal/pkg/utils"
 	"strconv"
 	"strings"
 
 	permissions "github.com/fr0nch/go-plugify-permissions"
+	t "github.com/fr0nch/go-plugify-translations"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 )
@@ -105,8 +105,7 @@ func (c *Commands) commandGroupInfo(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -114,7 +113,7 @@ func (c *Commands) commandGroupInfo(ctx *CommandContext) s2sdk.ResultType {
 		var priority int32
 		result := permissions.GetPriorityGroup(groupName, &priority)
 		if result == permissions.Status_GroupNotFound {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.group.not_found", ctx.Caller.Language, groupName))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName}))
 			return
 		}
 
@@ -175,8 +174,7 @@ func (c *Commands) commandCreateGroup(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -184,7 +182,7 @@ func (c *Commands) commandCreateGroup(ctx *CommandContext) s2sdk.ResultType {
 		priority, err := strconv.ParseInt(ctx.Args[1], 10, 32)
 		if err != nil {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.invalid_number", ctx.Caller.Language, ctx.Info.Example),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_number", []any{ctx.Info.Example}),
 			)
 			return
 		}
@@ -197,13 +195,13 @@ func (c *Commands) commandCreateGroup(ctx *CommandContext) s2sdk.ResultType {
 		var msg string
 		switch result {
 		case permissions.Status_Success:
-			msg = trs.GetTranslation("command.creategroup.success", ctx.Caller.Language, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.creategroup.success", []any{groupName})
 		case permissions.Status_GroupAlreadyExist:
-			msg = trs.GetTranslation("command.error.creategroup.already_exist", ctx.Caller.Language, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.creategroup.already_exist", []any{groupName})
 		case permissions.Status_ParentGroupNotFound:
-			msg = trs.GetTranslation("command.error.group.parent_not_found", ctx.Caller.Language, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.parent_not_found", []any{parentName})
 		default:
-			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
 		}
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
@@ -227,8 +225,7 @@ func (c *Commands) commandDeleteGroup(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -238,11 +235,11 @@ func (c *Commands) commandDeleteGroup(ctx *CommandContext) s2sdk.ResultType {
 		var msg string
 		switch result {
 		case permissions.Status_Success:
-			msg = trs.GetTranslation("command.deletegroup.success", ctx.Caller.Language, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.deletegroup.success", []any{groupName})
 		case permissions.Status_GroupNotFound:
-			msg = trs.GetTranslation("command.error.group.not_found", ctx.Caller.Language, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName})
 		default:
-			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
 		}
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
@@ -264,16 +261,14 @@ func (c *Commands) commandGroupParentSet(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(childName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(parentName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -283,15 +278,15 @@ func (c *Commands) commandGroupParentSet(ctx *CommandContext) s2sdk.ResultType {
 		var msg string
 		switch result {
 		case permissions.Status_Success:
-			msg = trs.GetTranslation("command.group.parent.set.success", ctx.Caller.Language, childName, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.parent.set.success", []any{childName, parentName})
 		case permissions.Status_ChildGroupNotFound:
-			msg = trs.GetTranslation("command.error.group.child_not_found", ctx.Caller.Language, childName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.child_not_found", []any{childName})
 		case permissions.Status_ParentGroupNotFound:
-			msg = trs.GetTranslation("command.error.group.parent_not_found", ctx.Caller.Language, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.parent_not_found", []any{parentName})
 		case permissions.Status_GroupHierarchyCycle:
-			msg = trs.GetTranslation("command.error.group.hierarchy_cycle", ctx.Caller.Language, childName, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.hierarchy_cycle", []any{childName, parentName})
 		default:
-			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
 		}
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
@@ -313,8 +308,7 @@ func (c *Commands) commandGroupParentInfo(ctx *CommandContext) s2sdk.ResultType 
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -322,15 +316,15 @@ func (c *Commands) commandGroupParentInfo(ctx *CommandContext) s2sdk.ResultType 
 		var parentName string
 		result := permissions.GetParent(groupName, &parentName)
 		if result == permissions.Status_ChildGroupNotFound {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.group.not_found", ctx.Caller.Language, groupName))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName}))
 			return
 		}
 
 		var msg string
 		if parentName == "" {
-			msg = trs.GetTranslation("command.group.parent.info.none", ctx.Caller.Language, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.parent.info.none", []any{groupName})
 		} else {
-			msg = trs.GetTranslation("command.group.parent.info", ctx.Caller.Language, groupName, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.parent.info", []any{groupName, parentName})
 		}
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
@@ -352,16 +346,14 @@ func (c *Commands) commandGroupParentCheck(ctx *CommandContext) s2sdk.ResultType
 
 		if strings.TrimSpace(childName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(parentName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -371,15 +363,15 @@ func (c *Commands) commandGroupParentCheck(ctx *CommandContext) s2sdk.ResultType
 		var msg string
 		switch result {
 		case permissions.Status_Allow:
-			msg = trs.GetTranslation("command.group.parent.check.has", ctx.Caller.Language, childName, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.parent.check.has", []any{childName, parentName})
 		case permissions.Status_Disallow:
-			msg = trs.GetTranslation("command.group.parent.check.has_not", ctx.Caller.Language, childName, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.parent.check.has_not", []any{childName, parentName})
 		case permissions.Status_ChildGroupNotFound:
-			msg = trs.GetTranslation("command.error.group.child_not_found", ctx.Caller.Language, childName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.child_not_found", []any{childName})
 		case permissions.Status_ParentGroupNotFound:
-			msg = trs.GetTranslation("command.error.group.parent_not_found", ctx.Caller.Language, parentName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.parent_not_found", []any{parentName})
 		default:
-			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
 		}
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
@@ -419,8 +411,7 @@ func (c *Commands) commandGroupPermissions(ctx *CommandContext) s2sdk.ResultType
 
 		if strings.TrimSpace(group) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -429,7 +420,7 @@ func (c *Commands) commandGroupPermissions(ctx *CommandContext) s2sdk.ResultType
 
 		result := permissions.DumpPermissionsGroup(group, &permissionsGroup)
 		if result == permissions.Status_GroupNotFound {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, trs.GetTranslation("command.error.group.not_found", ctx.Caller.Language, group))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{group}))
 			return
 		}
 
@@ -460,16 +451,14 @@ func (c *Commands) commandGroupPermissionCheck(ctx *CommandContext) s2sdk.Result
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -479,15 +468,15 @@ func (c *Commands) commandGroupPermissionCheck(ctx *CommandContext) s2sdk.Result
 		var msg string
 		switch result {
 		case permissions.Status_Allow:
-			msg = trs.GetTranslation("command.group.permission.allow", ctx.Caller.Language, groupName, permName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.permission.allow", []any{groupName, permName})
 		case permissions.Status_Disallow:
-			msg = trs.GetTranslation("command.group.permission.disallow", ctx.Caller.Language, groupName, permName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.permission.disallow", []any{groupName, permName})
 		case permissions.Status_PermNotFound:
-			msg = trs.GetTranslation("command.error.permission.not_found", ctx.Caller.Language)
+			msg = t.Translate(ctx.Caller.Language, "command.error.permission.not_found")
 		case permissions.Status_GroupNotFound:
-			msg = trs.GetTranslation("command.error.group.not_found", ctx.Caller.Language, groupName)
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName})
 		default:
-			msg = trs.GetTranslation("command.error.unknown", ctx.Caller.Language)
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
 		}
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
@@ -549,16 +538,14 @@ func (c *Commands) commandGroupPermissionAdd(ctx *CommandContext) s2sdk.ResultTy
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -577,7 +564,7 @@ func (c *Commands) commandGroupPermissionAdd(ctx *CommandContext) s2sdk.ResultTy
 		result := permissions.AddPermissionGroup(c.pluginID, groupName, permName, false)
 
 		key := buildGroupPermissionActionKey("command.group.permission.add", result, wildcard, disallow)
-		msg := trs.GetTranslation(key, ctx.Caller.Language, groupName, permCleared)
+		msg := t.TranslateFormat(ctx.Caller.Language, key, []any{groupName, permCleared})
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 
@@ -599,16 +586,14 @@ func (c *Commands) commandGroupPermissionSet(ctx *CommandContext) s2sdk.ResultTy
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -627,7 +612,7 @@ func (c *Commands) commandGroupPermissionSet(ctx *CommandContext) s2sdk.ResultTy
 		result := permissions.SetPermissionGroup(c.pluginID, groupName, permName, false)
 
 		key := buildGroupPermissionActionKey("command.group.permission.set", result, wildcard, disallow)
-		msg := trs.GetTranslation(key, ctx.Caller.Language, groupName, permCleared)
+		msg := t.TranslateFormat(ctx.Caller.Language, key, []any{groupName, permCleared})
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 
@@ -649,16 +634,14 @@ func (c *Commands) commandGroupPermissionRemove(ctx *CommandContext) s2sdk.Resul
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.group.empty_name", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				trs.GetTranslation("command.error.permission.empty", ctx.Caller.Language,
-					trs.GetTranslation(ctx.Info.Example, ctx.Caller.Language)),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}
@@ -671,7 +654,7 @@ func (c *Commands) commandGroupPermissionRemove(ctx *CommandContext) s2sdk.Resul
 		result := permissions.RemovePermissionGroup(c.pluginID, groupName, permName, false, false)
 
 		key := buildGroupPermissionRemoveKey(result)
-		msg := trs.GetTranslation(key, ctx.Caller.Language, groupName, permCleared)
+		msg := t.TranslateFormat(ctx.Caller.Language, key, []any{groupName, permCleared})
 
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 

@@ -15,6 +15,9 @@
 		},
 		{
 			"name": "s2sdk"
+		},
+		{
+			"name": "translations"
 		}
 	],
 	"methods": []

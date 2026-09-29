@@ -1,17 +1,14 @@
 package internal
 
 import (
+	"path/filepath"
 	"permissions-connector-s2/internal/commands"
 	"permissions-connector-s2/internal/pkg/config"
-	trs "permissions-connector-s2/internal/pkg/translations"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
+	t "github.com/fr0nch/go-plugify-translations"
 	"github.com/fr0nch/logger"
 	"github.com/untrustedmodders/go-plugify"
-)
-
-const (
-	translationFileName = "permissions-connector-s2"
 )
 
 type PermsConnectorPlugin struct {
@@ -57,9 +54,14 @@ func (p *PermsConnectorPlugin) OnPluginStart() error {
 		},
 	)
 
-	err = trs.LoadTranslation(translationFileName)
-	if err != nil {
-		p.log.Errorf("Error loading translations: %v", err)
+	const translationFile = "permissions-connector-s2.yaml"
+	if err := t.LoadTranslation([]string{
+		filepath.Join(p.Plugin.Location(), translationFile),
+		filepath.Join(plugify.BaseDir(), "translations", translationFile),
+		filepath.Join(plugify.ConfigsDir(), translationFile),
+		filepath.Join(plugify.DataDir(), translationFile),
+	}); err != "" {
+		p.log.Errorf("Error loading translations: %s", err)
 	}
 
 	//permissions.SetConnectorID(p.PluginID)

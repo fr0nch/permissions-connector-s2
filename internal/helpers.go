@@ -2,20 +2,20 @@ package internal
 
 import (
 	"permissions-connector-s2/internal/pkg/config"
-	trs "permissions-connector-s2/internal/pkg/translations"
 	"permissions-connector-s2/internal/pkg/utils"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
+	t "github.com/fr0nch/go-plugify-translations"
 )
 
 func (p *PermsConnectorPlugin) SendTranslatedNotifyPlayer(playerSlot int32, flags config.NotifyFlag, translationKey, language string, args ...any) {
 	var msg string
 	if flags&(config.Console|config.Chat) != 0 {
-		msg = trs.GetTranslation(translationKey, language, args...)
+		msg = t.TranslateFormat(language, translationKey, args)
 		p.SendNotifyPlayer(playerSlot, config.Console|config.Chat, msg)
 	}
 	if flags&config.Hint != 0 {
-		msg = trs.GetTranslation(translationKey+".hint", language, args...)
+		msg = t.TranslateFormat(language, translationKey+".hint", args)
 		p.SendNotifyPlayer(playerSlot, config.Hint, msg)
 	}
 }
@@ -45,7 +45,7 @@ func (p *PermsConnectorPlugin) DisplayActiveGroups(playerSlot int32, groups []st
 	}
 
 	notifyMode := p.config.Settings.NotifyMode.ToFlag()
-	language := s2sdk.GetClientLanguage(playerSlot)
+	language := s2sdk.GetClientLanguageCode(playerSlot)
 
 	if notifyMode&(config.Console|config.Chat) != 0 {
 		mode := config.Console | config.Chat
@@ -55,11 +55,10 @@ func (p *PermsConnectorPlugin) DisplayActiveGroups(playerSlot int32, groups []st
 			var text string
 
 			if group.Timestamp > 0 {
-				text = trs.GetTranslation("user.loaded.active_groups.temporary", language, group.Name,
-					utils.FormatTimestamp(group.Timestamp, p.config.Settings.FormatTimestamp),
-				)
+				text = t.TranslateFormat(language, "user.loaded.active_groups.temporary", []any{group.Name,
+					utils.FormatTimestamp(group.Timestamp, p.config.Settings.FormatTimestamp)})
 			} else {
-				text = trs.GetTranslation("user.loaded.active_groups.permanent", language, group.Name)
+				text = t.TranslateFormat(language, "user.loaded.active_groups.permanent", []any{group.Name})
 			}
 
 			p.SendNotifyPlayer(playerSlot, mode, text)

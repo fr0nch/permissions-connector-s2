@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"permissions-connector-s2/internal/pkg/config"
-	"permissions-connector-s2/internal/pkg/translations"
 	"slices"
 	"strconv"
 	"strings"
@@ -15,6 +14,7 @@ import (
 	"unicode/utf8"
 
 	permissions "github.com/fr0nch/go-plugify-permissions"
+	t "github.com/fr0nch/go-plugify-translations"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 )
@@ -26,14 +26,14 @@ func FormatTimestamp(ts int64, fTs string) string {
 
 func FormatTimestamp2(ts int64, fTs string, lang string) string {
 	if ts == 0 {
-		return translations.GetTranslation("time.forever", lang)
+		return t.Translate(lang, "time.forever")
 	}
 	return FormatTimestamp(ts, fTs)
 }
 
 func TranslateTime(lang string, ts int64, compute bool, abbr bool) string {
 	if ts == 0 {
-		return translations.GetTranslation("time.forever", lang)
+		return t.Translate(lang, "time.forever")
 	}
 
 	if compute {
@@ -202,7 +202,7 @@ func BuildTranslationPermKey(key string, action permissions.Action, oldStatus pe
 }
 
 func DeclineWord(n int64, lang, one, two, five string) string {
-	return getDeclension(n, translations.GetTranslation(one, lang), translations.GetTranslation(two, lang), translations.GetTranslation(five, lang))
+	return getDeclension(n, t.Translate(lang, one), t.Translate(lang, two), t.Translate(lang, five))
 }
 
 // Source: https://github.com/rekurt/go-propisyu/blob/80c2c6af752483498506c191b080423cc7f747d5/declension.go#L17

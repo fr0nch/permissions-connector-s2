@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"permissions-connector-s2/internal/pkg/config"
-	trs "permissions-connector-s2/internal/pkg/translations"
 	"permissions-connector-s2/internal/pkg/utils"
 
 	permissions "github.com/fr0nch/go-plugify-permissions"
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
+	t "github.com/fr0nch/go-plugify-translations"
 	"github.com/fr0nch/logger"
 )
 
@@ -29,7 +29,7 @@ func NewPlayer(slot int32) *Player {
 			Slot:      slot,
 			Name:      s2sdk.GetClientName(slot),
 			SteamID64: s2sdk.GetClientSteamID64(slot),
-			Language:  s2sdk.GetClientLanguage(slot),
+			Language:  s2sdk.GetClientLanguageCode(slot),
 		}
 	}
 
@@ -126,7 +126,7 @@ func NewCommands(pluginID int64, config *config.Config, log *logger.Logger) *Com
 func (c *Commands) Register() {
 	var flags = s2sdk.ConVarFlag_Release | s2sdk.ConVarFlag_ServerCanExecute | s2sdk.ConVarFlag_LinkedConcommand | s2sdk.ConVarFlag_ClientCanExecute
 	for cmdName, info := range c.handlers {
-		s2sdk.AddConsoleCommand(cmdName, trs.GetTranslation(info.Description, s2sdk.GetServerLanguage()), flags, c.conCommandCallback, s2sdk.HookMode_Post)
+		s2sdk.AddConsoleCommand(cmdName, t.Translate(s2sdk.GetServerLanguage(), info.Description), flags, c.conCommandCallback, s2sdk.HookMode_Post)
 	}
 }
 
@@ -150,7 +150,7 @@ func (c *Commands) conCommandCallback(caller int32, context s2sdk.ConCommandCont
 	if caller > -1 {
 		if command.Permission != "" && permissions.HasPermission(ctx.Caller.SteamID64, command.Permission) != permissions.Status_Allow {
 			utils.ReplyToCommandCleared(caller, context,
-				trs.GetTranslation("command.error.no_permission", ctx.Caller.Language),
+				t.Translate(ctx.Caller.Language, "command.error.no_permission"),
 			)
 			return s2sdk.ResultType_Handled
 		}
@@ -159,8 +159,7 @@ func (c *Commands) conCommandCallback(caller int32, context s2sdk.ConCommandCont
 	argsCount := len(ctx.Args)
 	if argsCount < command.MinArgs {
 		utils.ReplyToCommandCleared(caller, context,
-			trs.GetTranslation("command.error.invalid_arguments_count", ctx.Caller.Language,
-				trs.GetTranslation(command.Example, ctx.Caller.Language)),
+			t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_arguments_count", []any{t.Translate(ctx.Caller.Language, command.Example)}),
 		)
 		return s2sdk.ResultType_Handled
 	}
@@ -173,16 +172,16 @@ func findPlayerTarget(ctx *CommandContext) (*Player, error) {
 	clientCounts := len(clients)
 
 	if clientCounts == 0 {
-		return nil, errors.New(trs.GetTranslation("command.error.user.not_found", ctx.Caller.Language, ctx.Info))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_found", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
 	}
 
 	if clientCounts > 1 {
-		return nil, errors.New(trs.GetTranslation("command.error.user.multiple_found", ctx.Caller.Language, ctx.Info.Example))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.multiple_found", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
 	}
 
 	target := NewPlayer(clients[0])
 	if target == nil {
-		return nil, errors.New(trs.GetTranslation("command.error.user.not_valid", ctx.Caller.Language, ctx.Info.Example))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_valid", []any{ctx.Info.Example}))
 	}
 
 	return target, canAffectUser(ctx.Caller, target)
@@ -198,11 +197,11 @@ func canAffectUser(caller, target *Player) error {
 
 	switch resultAffect {
 	case permissions.Status_Disallow:
-		err = errors.New(trs.GetTranslation("command.error.affect_user.disallow", caller.Language, target.Name, target.SteamID64))
+		err = errors.New(t.TranslateFormat(caller.Language, "command.error.affect_user.disallow", []any{target.Name, target.SteamID64}))
 	case permissions.Status_ActorUserNotFound:
-		err = errors.New(trs.GetTranslation("command.error.actor.not_found", caller.Language))
+		err = errors.New(t.Translate(caller.Language, "command.error.actor.not_found"))
 	case permissions.Status_TargetUserNotFound:
-		err = errors.New(trs.GetTranslation("command.error.target.not_found", caller.Language, target.Name, target.SteamID64))
+		err = errors.New(t.TranslateFormat(caller.Language, "command.error.target.not_found", []any{target.Name, target.SteamID64}))
 	}
 
 	return err
@@ -224,15 +223,15 @@ func (c *Commands) commandPerms(ctx *CommandContext) s2sdk.ResultType {
 		data = append(data,
 			[]any{
 				name,
-				trs.GetTranslation(c.handlers[name].Description, ctx.Caller.Language),
-				trs.GetTranslation(c.handlers[name].Example, ctx.Caller.Language),
+				t.Translate(ctx.Caller.Language, c.handlers[name].Description),
+				t.Translate(ctx.Caller.Language, c.handlers[name].Example),
 			},
 		)
 	}
 
 	if len(data) == 0 {
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-			trs.GetTranslation("command.error.no_available_commands", ctx.Caller.Language),
+			t.Translate(ctx.Caller.Language, "command.error.no_available_commands"),
 		)
 		return s2sdk.ResultType_Continue
 	}
@@ -243,7 +242,7 @@ func (c *Commands) commandPerms(ctx *CommandContext) s2sdk.ResultType {
 		for i := range data {
 			s2sdk.ReplyToCommand(ctx.ConCommandContext, ctx.Caller.Slot,
 				fmt.Sprintf("%s - %s", data[i][0].(string),
-					trs.GetTranslation(data[i][1].(string), ctx.Caller.Language),
+					t.Translate(ctx.Caller.Language, data[i][1].(string)),
 				),
 			)
 		}
@@ -287,11 +286,7 @@ func (c *Commands) commandReloadConfig(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandReloadTranslations(ctx *CommandContext) s2sdk.ResultType {
-	err := trs.LoadTranslation("permissions-connector-s2")
-	if err != nil {
-		c.log.Errorf("Error reload t: %v", err)
-		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Error reload t: "+err.Error())
-	}
+	t.ReloadTransalations()
 
 	utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Translations reload successfully.")
 	c.log.Infof("Translations reload successfully.")

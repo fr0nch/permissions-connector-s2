@@ -107,7 +107,7 @@ func (p *PermsConnectorPlugin) OnUserPermissionChange(pluginID int64, action per
 		return
 	}
 
-	language := s2sdk.GetClientLanguage(playerSlot)
+	language := s2sdk.GetClientLanguageCode(playerSlot)
 	translationKey := utils.BuildTranslationPermKey("user.permission", action, oldState, newState, oldTimestamp, newTimestamp)
 
 	switch action {
@@ -175,7 +175,7 @@ func (p *PermsConnectorPlugin) OnUserGroupChange(pluginID int64, action permissi
 		return
 	}
 
-	language := s2sdk.GetClientLanguage(playerSlot)
+	language := s2sdk.GetClientLanguageCode(playerSlot)
 	translationKey := utils.BuildTranslationGroupKey("user.group", action, oldTimestamp, newTimestamp)
 
 	switch action {
@@ -233,7 +233,7 @@ func (p *PermsConnectorPlugin) OnPermissionExpiration(targetID uint64, perm stri
 
 	p.log.Debugf("Permission '%s'[state: %v] expiration from user '%d'", perm, state, targetID)
 
-	language := s2sdk.GetClientLanguage(playerSlot)
+	language := s2sdk.GetClientLanguageCode(playerSlot)
 
 	var stateKey string
 
@@ -255,7 +255,7 @@ func (p *PermsConnectorPlugin) OnGroupExpiration(targetID uint64, group string) 
 
 	p.log.Debugf("Group '%s' expiration from user '%d'", group, targetID)
 
-	language := s2sdk.GetClientLanguage(playerSlot)
+	language := s2sdk.GetClientLanguageCode(playerSlot)
 	p.SendTranslatedNotifyPlayer(playerSlot, p.config.Settings.NotifyMode.ToFlag(),
 		"user.group.expired", language, group,
 	)
