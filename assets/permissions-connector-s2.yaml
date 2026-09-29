@@ -969,6 +969,16 @@ command.group.permission.remove.success:
   ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}успешно удалено право {{red}}'{1}'{{default}}."
   en: ""
 
+command.group.permission.remove.all.allow:
+  # {0} - Group name
+  ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}успешно снят {{green}}полный доступ {{default}}ко всем правам."
+  en: ""
+
+command.group.permission.remove.all.disallow:
+  # {0} - Group name
+  ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}успешно снят {{green}}полный запрет {{default}}на все права."
+  en: ""
+
 command.error.group.permission.already_granted:
   # {0} - Group name, {1} - Permission
   ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}уже есть право {{red}}'{1}'{{default}}!"

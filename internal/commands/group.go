@@ -648,13 +648,25 @@ func (c *Commands) commandGroupPermissionRemove(ctx *CommandContext) s2sdk.Resul
 			permCleared = permCleared[1:]
 		}
 
+		var oldState permissions.Status
+		if permCleared == "*" {
+			oldState = permissions.HasPermissionGroupExtended(groupName, permCleared, true)
+		}
+
 		result := permissions.RemovePermissionGroup(c.pluginID, groupName, permName, false, false)
 
 		var msg string
 
 		switch result {
 		case permissions.Status_Success:
-			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.permission.remove.success", []any{groupName, permCleared})
+			switch {
+			case permCleared == "*" && oldState == permissions.Status_Disallow:
+				msg = t.TranslateFormat(ctx.Caller.Language, "command.group.permission.remove.all.disallow", []any{groupName})
+			case permCleared == "*":
+				msg = t.TranslateFormat(ctx.Caller.Language, "command.group.permission.remove.all.allow", []any{groupName})
+			default:
+				msg = t.TranslateFormat(ctx.Caller.Language, "command.group.permission.remove.success", []any{groupName, permCleared})
+			}
 		case permissions.Status_GroupNotFound:
 			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName})
 		case permissions.Status_PermNotFound:
