@@ -130,11 +130,11 @@ func (c *Commands) commandGroupInfo(ctx *CommandContext) s2sdk.ResultType {
 		var optionValues []any
 		permissions.GetAllOptionsGroup(groupName, &optionNames, &optionValues)
 
-		s2sdk.PrintToConsole(ctx.Caller.Slot, "[Group Info]\n ")
+		utils.PrintToConsole(ctx.Caller.Slot, "[Group Info]\n ")
 
-		s2sdk.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Name: %s", groupName))
-		s2sdk.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Priority: %d", priority))
-		s2sdk.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Parent: %s\n ", parentName))
+		utils.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Name: %s", groupName))
+		utils.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Priority: %d", priority))
+		utils.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Parent: %s\n ", parentName))
 
 		var data [][]any
 		for i := range permissionsGroup {

@@ -237,10 +237,10 @@ func (c *Commands) commandPerms(ctx *CommandContext) s2sdk.ResultType {
 	}
 
 	if ctx.ConCommandContext == s2sdk.ConCommandContext_Chat {
-		s2sdk.ReplyToCommand(ctx.ConCommandContext, ctx.Caller.Slot, "[Permissions] Список команд:")
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Список команд:")
 
 		for i := range data {
-			s2sdk.ReplyToCommand(ctx.ConCommandContext, ctx.Caller.Slot,
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
 				fmt.Sprintf("%s - %s", data[i][0].(string),
 					t.Translate(ctx.Caller.Language, data[i][1].(string)),
 				),

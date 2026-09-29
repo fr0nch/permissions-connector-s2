@@ -240,7 +240,7 @@ func GetPlayerSlotBySteamID64(steamID64 uint64) int32 {
 
 func PrintConsoleTableToClient(playerSlot int32, tableName string, headers []string, rows [][]any) {
 	//if !IsValidClient(playerSlot) {
-	//	s2sdk.PrintToConsole(playerSlot, "No valid player.\n")
+	//	PrintToConsole(playerSlot, "No valid player.\n")
 	//	return
 	//}
 
@@ -249,7 +249,7 @@ func PrintConsoleTableToClient(playerSlot int32, tableName string, headers []str
 	}
 
 	if len(rows) == 0 {
-		s2sdk.PrintToConsole(playerSlot, fmt.Sprintf("[%s]\n -\n ", tableName))
+		PrintToConsole(playerSlot, fmt.Sprintf("[%s]\n -\n ", tableName))
 		return
 	}
 
@@ -308,7 +308,7 @@ func PrintConsoleTableToClient(playerSlot int32, tableName string, headers []str
 
 	w.Flush()
 
-	s2sdk.PrintToConsole(playerSlot, fmt.Sprintf("[%s]\n", tableName))
+	PrintToConsole(playerSlot, fmt.Sprintf("[%s]\n", tableName))
 
 	lines := strings.Split(buf.String(), "\n")
 	for i := range lines {
@@ -317,7 +317,7 @@ func PrintConsoleTableToClient(playerSlot int32, tableName string, headers []str
 				continue
 			}
 		}
-		s2sdk.PrintToConsole(playerSlot, " "+lines[i])
+		PrintToConsole(playerSlot, " "+lines[i])
 	}
 }
 
@@ -347,6 +347,14 @@ func RemoveTags(text string) string {
 	return builder.String()
 }
 
+const (
+	printReply int32 = iota
+	printConsole
+	printChat
+	printChatColored
+	printHint
+)
+
 func ReplyToCommandCleared(caller int32, context s2sdk.ConCommandContext, message string) {
 	if len(message) == 0 {
 		return
@@ -356,5 +364,43 @@ func ReplyToCommandCleared(caller int32, context s2sdk.ConCommandContext, messag
 		message = RemoveTags(message)
 	}
 
-	s2sdk.ReplyToCommand(context, caller, message)
+	s2sdk.QueueTaskForNextFrame(printTask, []any{printReply, caller, message, int32(context)})
+}
+
+func PrintToConsole(playerSlot int32, message string) {
+	// Sending an empty string to the console crashes the server (bug S2SDK).
+	if len(message) == 0 {
+		return
+	}
+
+	s2sdk.QueueTaskForNextFrame(printTask, []any{printConsole, playerSlot, message, int32(0)})
+}
+
+func PrintToChat(playerSlot int32, message string) {
+	s2sdk.QueueTaskForNextFrame(printTask, []any{printChat, playerSlot, message, int32(0)})
+}
+
+func PrintToChatColored(playerSlot int32, message string) {
+	s2sdk.QueueTaskForNextFrame(printTask, []any{printChatColored, playerSlot, message, int32(0)})
+}
+
+func PrintCentreHtml(playerSlot int32, message string, duration int32) {
+	s2sdk.QueueTaskForNextFrame(printTask, []any{printHint, playerSlot, message, duration})
+}
+
+func printTask(userData []any) {
+	playerSlot, message, extra := userData[1].(int32), userData[2].(string), userData[3].(int32)
+
+	switch userData[0].(int32) {
+	case printReply:
+		s2sdk.ReplyToCommand(s2sdk.ConCommandContext(extra), playerSlot, message)
+	case printConsole:
+		s2sdk.PrintToConsole(playerSlot, message)
+	case printChat:
+		s2sdk.PrintToChat(playerSlot, message)
+	case printChatColored:
+		s2sdk.PrintToChatColored(playerSlot, message)
+	case printHint:
+		s2sdk.PrintCentreHtml(playerSlot, message, extra)
+	}
 }

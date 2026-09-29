@@ -104,15 +104,15 @@ func registerUserCommands(c *Commands) {
 }
 
 func (c *Commands) commandUserInfo(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		if target.Slot == -1 {
-			s2sdk.ReplyToCommand(ctx.ConCommandContext, ctx.Caller.Slot, "[Permissions Info]\nServer has full permissions :)")
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions Info]\nServer has full permissions :)")
 			return
 		}
 
@@ -130,13 +130,13 @@ func (c *Commands) commandUserInfo(ctx *CommandContext) s2sdk.ResultType {
 		perms := utils.ParseGroupsOrNodes(_perms, nil)
 		groups := utils.ParseGroupsOrNodes(_groups, nil)
 
-		//s2sdk.PrintToConsole(ctx.Caller.Slot, "[Permissions Dump]\n")
+		//utils.PrintToConsole(ctx.Caller.Slot, "[Permissions Dump]\n")
 
-		s2sdk.PrintToConsole(ctx.Caller.Slot, "[Permissions Info]\n ")
+		utils.PrintToConsole(ctx.Caller.Slot, "[Permissions Info]\n ")
 
-		s2sdk.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Name: %s[%d]", target.Name, target.Slot))
-		s2sdk.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("SteamID64: %d", target.SteamID64))
-		s2sdk.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Immunity: %d\n ", immunity))
+		utils.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Name: %s[%d]", target.Name, target.Slot))
+		utils.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("SteamID64: %d", target.SteamID64))
+		utils.PrintToConsole(ctx.Caller.Slot, fmt.Sprintf("Immunity: %d\n ", immunity))
 
 		var data [][]any
 		for _, group := range groups {
@@ -196,42 +196,40 @@ func (c *Commands) commandUserInfo(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandUserList(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		data := make([][]any, 0, 64)
-		for i := int32(0); i < 64; i++ {
-			if !utils.IsValidClient(i) {
-				continue
-			}
-
-			var groups []string
-			var steamID64 = s2sdk.GetClientSteamID64(i)
-			permissions.GetUserGroups(steamID64, &groups)
-
-			data = append(data, []any{
-				i,
-				s2sdk.GetClientName(i),
-				steamID64,
-				strings.Join(groups, ", "),
-			})
+	data := make([][]any, 0, 64)
+	for i := int32(0); i < 64; i++ {
+		if !utils.IsValidClient(i) {
+			continue
 		}
 
-		utils.PrintConsoleTableToClient(ctx.Caller.Slot, "Players List",
-			[]string{"#", "Name", "SteamID64", "Groups"},
-			data,
-		)
-	}()
+		var groups []string
+		var steamID64 = s2sdk.GetClientSteamID64(i)
+		permissions.GetUserGroups(steamID64, &groups)
+
+		data = append(data, []any{
+			i,
+			s2sdk.GetClientName(i),
+			steamID64,
+			strings.Join(groups, ", "),
+		})
+	}
+
+	utils.PrintConsoleTableToClient(ctx.Caller.Slot, "Players List",
+		[]string{"#", "Name", "SteamID64", "Groups"},
+		data,
+	)
 
 	return s2sdk.ResultType_Continue
 }
 
 func (c *Commands) commandUserPermissions(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var perms []string
 		permissions.DumpPermissions(target.SteamID64, &perms)
 
@@ -251,7 +249,7 @@ func (c *Commands) commandUserPermissions(ctx *CommandContext) s2sdk.ResultType 
 			})
 		}
 
-		utils.PrintConsoleTableToClient(ctx.Caller.Slot, s2sdk.GetClientName(target.Slot)+"`s permissions",
+		utils.PrintConsoleTableToClient(ctx.Caller.Slot, target.Name+"`s permissions",
 			[]string{"permission", "expires at", "ts"},
 			data,
 		)
@@ -261,13 +259,13 @@ func (c *Commands) commandUserPermissions(ctx *CommandContext) s2sdk.ResultType 
 }
 
 func (c *Commands) commandUserGroups(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var groups []string
 		permissions.GetUserGroups(target.SteamID64, &groups)
 
@@ -288,12 +286,12 @@ func (c *Commands) commandUserGroups(ctx *CommandContext) s2sdk.ResultType {
 				})
 			}
 
-			utils.PrintConsoleTableToClient(ctx.Caller.Slot, s2sdk.GetClientName(target.Slot)+"`s groups",
+			utils.PrintConsoleTableToClient(ctx.Caller.Slot, target.Name+"`s groups",
 				[]string{"group", "expires at", "ts"},
 				data,
 			)
 		} else {
-			s2sdk.PrintToChat(ctx.Caller.Slot, s2sdk.GetClientName(target.Slot)+"`s groups:")
+			utils.PrintToChat(ctx.Caller.Slot, target.Name+"`s groups:")
 			for _, group := range parsed {
 				var msg string
 				if group.Timestamp > 0 {
@@ -303,7 +301,7 @@ func (c *Commands) commandUserGroups(ctx *CommandContext) s2sdk.ResultType {
 					msg = t.TranslateFormat(ctx.Caller.Language, "user.loaded.active_groups.permanent", []any{group.Name})
 				}
 
-				s2sdk.PrintToChatColored(ctx.Caller.Slot, msg)
+				utils.PrintToChatColored(ctx.Caller.Slot, msg)
 			}
 		}
 	}()
@@ -312,13 +310,13 @@ func (c *Commands) commandUserGroups(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandUserPermissionCheck(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
@@ -344,13 +342,13 @@ func (c *Commands) commandUserPermissionCheck(ctx *CommandContext) s2sdk.ResultT
 }
 
 func (c *Commands) commandUserGroupCheck(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		groupName := ctx.Args[1]
 
 		if strings.TrimSpace(groupName) == "" {
@@ -392,13 +390,13 @@ func (c *Commands) commandUserGroupCheck(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
@@ -479,13 +477,13 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 }
 
 func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
@@ -566,13 +564,13 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 }
 
 func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
@@ -613,13 +611,13 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 }
 
 func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
@@ -683,13 +681,13 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandUserGroupSet(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 
@@ -744,13 +742,13 @@ func (c *Commands) commandUserGroupSet(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandUserGroupRemove(ctx *CommandContext) s2sdk.ResultType {
-	go func() {
-		target, err := findPlayerTarget(ctx)
-		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
-			return
-		}
+	target, err := findPlayerTarget(ctx)
+	if err != nil {
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, err.Error())
+		return s2sdk.ResultType_Continue
+	}
 
+	go func() {
 		var data GroupOrNode
 		data.Name = ctx.Args[1]
 

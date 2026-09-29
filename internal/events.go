@@ -67,6 +67,11 @@ func (p *PermsConnectorPlugin) OnUserLoaded(pluginID int64, targetID uint64, pla
 		return
 	}
 
+	s2sdk.QueueTaskForNextFrame(p.userLoadedTask, []any{targetID})
+}
+
+func (p *PermsConnectorPlugin) userLoadedTask(userData []any) {
+	targetID := userData[0].(uint64)
 	playerSlot := utils.GetPlayerSlotBySteamID64(targetID)
 
 	var groups []string

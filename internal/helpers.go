@@ -23,18 +23,13 @@ func (p *PermsConnectorPlugin) SendTranslatedNotifyPlayer(playerSlot int32, flag
 func (p *PermsConnectorPlugin) SendNotifyPlayer(playerSlot int32, flags config.NotifyFlag, text string) {
 	if flags&config.Console != 0 {
 		msg := utils.RemoveTags(text)
-		// Sending a null string to the console will crash the server (bug S2SDK).
-		if len(msg) == 0 {
-			return
-		}
-
-		s2sdk.PrintToConsole(playerSlot, msg)
+		utils.PrintToConsole(playerSlot, msg)
 	}
 	if flags&config.Chat != 0 {
-		s2sdk.PrintToChatColored(playerSlot, text)
+		utils.PrintToChatColored(playerSlot, text)
 	}
 	if flags&config.Hint != 0 {
-		s2sdk.PrintCentreHtml(playerSlot, utils.RemoveTags(text), p.config.Settings.HintDuration)
+		utils.PrintCentreHtml(playerSlot, utils.RemoveTags(text), p.config.Settings.HintDuration)
 	}
 }
 
