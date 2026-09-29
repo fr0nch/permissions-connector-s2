@@ -511,6 +511,13 @@ func groupPermissionActionMsg(lang string, prefix string, result permissions.Sta
 		return t.TranslateFormat(lang, "command.error.group.not_found", []any{group})
 	case permissions.Status_PermAlreadyGranted:
 		return t.TranslateFormat(lang, "command.error.group.permission.already_granted", []any{group, perm})
+	case permissions.Status_PermConflict:
+		// The permission already exists with the opposite state
+		key := "command.error.group.permission.conflict.disallow"
+		if disallow {
+			key = "command.error.group.permission.conflict.allow"
+		}
+		return t.TranslateFormat(lang, key, []any{group, perm})
 	case permissions.Status_InvalidPermission:
 		return t.Translate(lang, "command.error.permission.invalid")
 	default:

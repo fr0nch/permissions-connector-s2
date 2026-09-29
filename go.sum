@@ -2,6 +2,8 @@ github.com/fr0nch/go-plugify-permissions v1.0.2 h1:8EAxwP1DM1KmZexVsaSEkNQnVwQb6
 github.com/fr0nch/go-plugify-permissions v1.0.2/go.mod h1:CJPquCetDHfpehp6BMA8kdJTJgVXA1rn9p9/DNSaQ6c=
 github.com/fr0nch/go-plugify-permissions v1.0.4 h1:QX3cdRO/2vWKBqTwsJ3E9H8/r/NS8y08gNKJ36jCw1I=
 github.com/fr0nch/go-plugify-permissions v1.0.4/go.mod h1:CJPquCetDHfpehp6BMA8kdJTJgVXA1rn9p9/DNSaQ6c=
+github.com/fr0nch/go-plugify-permissions v1.0.5 h1:YMObbVWZNPLZzkW+X90Rb1uB/iDVJlFKxevoRzdujmI=
+github.com/fr0nch/go-plugify-permissions v1.0.5/go.mod h1:CJPquCetDHfpehp6BMA8kdJTJgVXA1rn9p9/DNSaQ6c=
 github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.24 h1:DmfPD6C9YZ1bG8y3fMRIk9O/sbLcpLIgKLxI1KgGZS8=
 github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.24/go.mod h1:3fTMJlJJxH79YphWS33DOQZBuxe+M0eQm/EZ1Avl/q8=
 github.com/fr0nch/go-plugify-translations v1.0.2 h1:6VDwXisMa4Rg5xdoi6b2Hy5eI8O13Cvr/dwfffXWGKU=

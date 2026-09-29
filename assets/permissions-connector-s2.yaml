@@ -746,6 +746,16 @@ command.error.group.permission.already_granted:
   ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}уже есть право {{red}}'{1}'{{default}}!"
   en: ""
 
+command.error.group.permission.conflict.allow:
+  # {0} - Group name, {1} - Permission
+  ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}уже есть разрешение на право {{red}}'{1}'{{default}}. Чтобы поменять, используйте perms_group_set_permission."
+  en: "{{darkblue}}[Permissions] {{default}}Group {{red}}'{0}' {{default}}already has permission {{red}}'{1}' {{default}}allowed. To change it, use perms_group_set_permission."
+
+command.error.group.permission.conflict.disallow:
+  # {0} - Group name, {1} - Permission
+  ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}уже есть запрет на право {{red}}'{1}'{{default}}. Чтобы поменять, используйте perms_group_set_permission."
+  en: "{{darkblue}}[Permissions] {{default}}Group {{red}}'{0}' {{default}}already has permission {{red}}'{1}' {{default}}denied. To change it, use perms_group_set_permission."
+
 # Add
 command.permission.add.allow.permanent:
   # {0} - Player name, {1} - Player slot, {2} - Permission,
@@ -1239,6 +1249,16 @@ command.error.user.permission.already_granted:
   # {0} - Player name, {1} - Player slot, {2} - Permission
   ru: "{{darkblue}}[Permissions] {{default}}У игрока {0}[{1}] уже есть право {2}!"
   en: ""
+
+command.error.user.permission.conflict.allow:
+  # {0} - Player name, {1} - Player slot, {2} - Permission
+  ru: "{{darkblue}}[Permissions] {{default}}У игрока {0}[{1}] уже есть разрешение на право {2}. Чтобы поменять, используйте perms_user_set_permission."
+  en: "{{darkblue}}[Permissions] {{default}}Player {0}[{1}] already has permission {2} allowed. To change it, use perms_user_set_permission."
+
+command.error.user.permission.conflict.disallow:
+  # {0} - Player name, {1} - Player slot, {2} - Permission
+  ru: "{{darkblue}}[Permissions] {{default}}У игрока {0}[{1}] уже есть запрет на право {2}. Чтобы поменять, используйте perms_user_set_permission."
+  en: "{{darkblue}}[Permissions] {{default}}Player {0}[{1}] already has permission {2} denied. To change it, use perms_user_set_permission."
 
 command.error.group.not_found:
   # {0} - Group name

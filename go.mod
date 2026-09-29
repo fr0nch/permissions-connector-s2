@@ -3,7 +3,7 @@ module permissions-connector-s2
 go 1.26.6
 
 require (
-	github.com/fr0nch/go-plugify-permissions v1.0.4
+	github.com/fr0nch/go-plugify-permissions v1.0.5
 	github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.24
 	github.com/fr0nch/go-plugify-translations v1.0.2
 	github.com/fr0nch/logger v0.1.6

@@ -813,6 +813,13 @@ func translateUserCommandResult(caller, target *Player, data GroupOrNode, additi
 		msg = t.TranslateFormat(caller.Language, "command.error.user.group.already_exist", []any{target.Name, target.Slot, data.Name})
 	case permissions.Status_PermAlreadyGranted:
 		msg = t.TranslateFormat(caller.Language, "command.error.user.permission.already_granted", []any{target.Name, target.Slot, data.Name})
+	case permissions.Status_PermConflict:
+		// The permission already exists with the opposite state
+		key := "command.error.user.permission.conflict.disallow"
+		if strings.HasPrefix(data.Name, "-") {
+			key = "command.error.user.permission.conflict.allow"
+		}
+		msg = t.TranslateFormat(caller.Language, key, []any{target.Name, target.Slot, strings.TrimPrefix(data.Name, "-")})
 	default:
 		msg = t.Translate(caller.Language, "command.error.unknown")
 	}
