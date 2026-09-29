@@ -133,7 +133,7 @@ func (c *Commands) commandGroupInfo(ctx *CommandContext) s2sdk.ResultType {
 		for i := range permissionsGroup {
 			status := "allow"
 			name := permissionsGroup[i]
-			if name[0] == '-' {
+			if strings.HasPrefix(name, "-") {
 				status = "disallow"
 				name = name[1:]
 			}
@@ -363,7 +363,7 @@ func (c *Commands) commandGroupPermissions(ctx *CommandContext) s2sdk.ResultType
 		rows := make([][]any, 0, len(permissionsGroup))
 		for i := range permissionsGroup {
 			status := "allow"
-			if permissionsGroup[i][0] == '-' {
+			if strings.HasPrefix(permissionsGroup[i], "-") {
 				status = "disallow"
 				permissionsGroup[i] = permissionsGroup[i][1:]
 			}
@@ -459,7 +459,7 @@ func (c *Commands) commandGroupPermissionAdd(ctx *CommandContext) s2sdk.ResultTy
 		permName := ctx.Args[1]
 
 		permCleared := permName
-		disallow := permName[0] == '-'
+		disallow := strings.HasPrefix(permName, "-")
 		if disallow {
 			permCleared = permCleared[1:]
 		}
@@ -493,7 +493,7 @@ func (c *Commands) commandGroupPermissionSet(ctx *CommandContext) s2sdk.ResultTy
 		permName := ctx.Args[1]
 
 		permCleared := permName
-		disallow := permName[0] == '-'
+		disallow := strings.HasPrefix(permName, "-")
 		if disallow {
 			permCleared = permCleared[1:]
 		}
@@ -527,7 +527,7 @@ func (c *Commands) commandGroupPermissionRemove(ctx *CommandContext) s2sdk.Resul
 		permName := ctx.Args[1]
 
 		permCleared := permName
-		if permName[0] == '-' {
+		if strings.HasPrefix(permName, "-") {
 			permCleared = permCleared[1:]
 		}
 

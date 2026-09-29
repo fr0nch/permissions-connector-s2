@@ -160,7 +160,7 @@ func (c *Commands) commandUserInfo(ctx *CommandContext) s2sdk.ResultType {
 		for i := range perms {
 			status := "allow"
 			name := perms[i].Name
-			if name[0] == '-' {
+			if strings.HasPrefix(name, "-") {
 				status = "disallow"
 				name = name[1:]
 			}
@@ -398,7 +398,7 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 		data.Duration = utils.TimeToSeconds(arg2, c.config.Settings.TimeMode)
 
 		permCleared := data.Name
-		if data.Name[0] == '-' {
+		if strings.HasPrefix(data.Name, "-") {
 			data.NewStatus = permissions.Status_Disallow
 			permCleared = permCleared[1:]
 		} else {
@@ -472,7 +472,7 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 		data.Name = ctx.Args[1]
 
 		permCleared := data.Name
-		if data.Name[0] == '-' {
+		if strings.HasPrefix(data.Name, "-") {
 			data.NewStatus = permissions.Status_Disallow
 			permCleared = permCleared[1:]
 		} else {
@@ -554,7 +554,7 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 		data.Name = ctx.Args[1]
 
 		permCleared := data.Name
-		if data.Name[0] == '-' {
+		if strings.HasPrefix(data.Name, "-") {
 			permCleared = permCleared[1:]
 		}
 
