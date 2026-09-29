@@ -452,7 +452,7 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 
 		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
-				Key: utils.BuildTranslationPermKey("command.permission", action, data.OldStatus, data.NewStatus, data.OldTimestamp, data.NewTimestamp),
+				Key: utils.BuildTranslationPermKey(permKeyPrefix("command.permission", data.Name), action, data.OldStatus, data.NewStatus, data.OldTimestamp, data.NewTimestamp),
 				Args: func() []any {
 					args := []any{target.Name, target.Slot, permCleared}
 					if data.Duration > 0 {
@@ -539,7 +539,7 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 
 		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
-				Key: utils.BuildTranslationPermKey("command.permission", action, data.OldStatus, data.NewStatus, data.OldTimestamp, data.NewTimestamp),
+				Key: utils.BuildTranslationPermKey(permKeyPrefix("command.permission", data.Name), action, data.OldStatus, data.NewStatus, data.OldTimestamp, data.NewTimestamp),
 				Args: func() []any {
 					args := []any{target.Name, target.Slot, permCleared}
 					if data.Duration > 0 {
@@ -594,7 +594,7 @@ func (c *Commands) commandUserPermissionRemove(ctx *CommandContext) s2sdk.Result
 
 		msg := translateUserCommandResult(ctx.Caller, target, data,
 			CmdSuccessResult{
-				Key:  utils.BuildTranslationPermKey("command.permission", permissions.Action_Remove, data.OldStatus, permissions.Status_PermNotFound, 0, 0),
+				Key:  utils.BuildTranslationPermKey(permKeyPrefix("command.permission", data.Name), permissions.Action_Remove, data.OldStatus, permissions.Status_PermNotFound, 0, 0),
 				Args: []any{target.Name, target.Slot, permCleared},
 			},
 		)
@@ -783,6 +783,13 @@ func (c *Commands) commandUserGroupRemove(ctx *CommandContext) s2sdk.ResultType 
 	return s2sdk.ResultType_Continue
 }
 
+func permKeyPrefix(prefix string, perm string) string {
+	if strings.TrimPrefix(perm, "-") == "*" {
+		return prefix + ".all"
+	}
+	return prefix
+}
+
 func translateUserCommandResult(caller, target *Player, data GroupOrNode, additional CmdSuccessResult) string {
 	var msg string
 
@@ -814,7 +821,6 @@ func translateUserCommandResult(caller, target *Player, data GroupOrNode, additi
 	case permissions.Status_PermAlreadyGranted:
 		msg = t.TranslateFormat(caller.Language, "command.error.user.permission.already_granted", []any{target.Name, target.Slot, data.Name})
 	case permissions.Status_PermConflict:
-		// The permission already exists with the opposite state
 		key := "command.error.user.permission.conflict.disallow"
 		if strings.HasPrefix(data.Name, "-") {
 			key = "command.error.user.permission.conflict.allow"
