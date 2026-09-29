@@ -182,7 +182,7 @@ func (c *Commands) commandCreateGroup(ctx *CommandContext) s2sdk.ResultType {
 		priority, err := strconv.ParseInt(ctx.Args[1], 10, 32)
 		if err != nil {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_number", []any{ctx.Info.Example}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_number", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
 			)
 			return
 		}

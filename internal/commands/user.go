@@ -411,7 +411,7 @@ func (c *Commands) commandUserPermissionAdd(ctx *CommandContext) s2sdk.ResultTyp
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
 			return
 		}
 
@@ -508,7 +508,7 @@ func (c *Commands) commandUserPermissionSet(ctx *CommandContext) s2sdk.ResultTyp
 		if argCount > 2 {
 			arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 			if err != nil {
-				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
+				utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
 				return
 			}
 
@@ -632,7 +632,7 @@ func (c *Commands) commandUserGroupAdd(ctx *CommandContext) s2sdk.ResultType {
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
 			return
 		}
 
@@ -702,7 +702,7 @@ func (c *Commands) commandUserGroupSet(ctx *CommandContext) s2sdk.ResultType {
 
 		arg2, err := strconv.ParseUint(ctx.Args[2], 10, 32)
 		if err != nil {
-			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{ctx.Info.Example}))
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_time", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
 			return
 		}
 

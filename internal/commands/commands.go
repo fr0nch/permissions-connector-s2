@@ -181,7 +181,7 @@ func findPlayerTarget(ctx *CommandContext) (*Player, error) {
 
 	target := NewPlayer(clients[0])
 	if target == nil {
-		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_valid", []any{ctx.Info.Example}))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_valid", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
 	}
 
 	return target, canAffectUser(ctx.Caller, target)
