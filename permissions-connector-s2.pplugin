@@ -11,7 +11,8 @@
 	"language": "golang",
 	"dependencies": [
 		{
-			"name": "permissions"
+			"name": "permissions",
+			"constraints": ">=1.3.0"
 		},
 		{
 			"name": "s2sdk"
