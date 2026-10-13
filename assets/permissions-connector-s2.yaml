@@ -901,6 +901,16 @@ command.group.parent.info.none:
   ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}нет родительской группы."
   en: "{{darkblue}}[Permissions] {{default}}Group {{red}}'{0}' {{default}}has no parent group."
 
+command.group.option.set.success:
+  # {0} - Group name, {1} - Option, {2} - Value
+  ru: "{{darkblue}}[Permissions] {{default}}Группе {{red}}'{0}' {{default}}успешно установлена опция {{red}}'{1}' {{default}}= {{green}}'{2}'{{default}}."
+  en: "{{darkblue}}[Permissions] {{default}}Option {{red}}'{1}' {{default}}= {{green}}'{2}' {{default}}was successfully set for group {{red}}'{0}'{{default}}."
+
+command.group.option.info:
+  # {0} - Group name, {1} - Option, {2} - Value
+  ru: "{{darkblue}}[Permissions] {{default}}Опция {{red}}'{1}' {{default}}группы {{red}}'{0}'{{default}}: {{green}}'{2}'{{default}}."
+  en: "{{darkblue}}[Permissions] {{default}}Option {{red}}'{1}' {{default}}of group {{red}}'{0}'{{default}}: {{green}}'{2}'{{default}}."
+
 ### Group permissions ###
 
 command.group.permission.add.allow:
@@ -1412,6 +1422,14 @@ command.example.group.parent.set:
   ru: "perms_group_parent_set <дочерняя_группа> <родительская_группа>"
   en: "perms_group_parent_set <child_group> <parent_group>"
 
+command.example.group.option.set:
+  ru: "perms_group_set_option <название_группы> <опция> <значение>"
+  en: "perms_group_set_option <group_name> <option> <value>"
+
+command.example.group.option:
+  ru: "perms_group_option <название_группы> <опция>"
+  en: "perms_group_option <group_name> <option>"
+
 command.example.group.parent.info:
   ru: "perms_group_parent_info <название_группы>"
   en: "perms_group_parent_info <group_name>"
@@ -1525,6 +1543,14 @@ command.description.deletegroup:
 command.description.group.parent.set:
   ru: "Устанавливает родительскую группу для указанной группы."
   en: "Sets the parent group for the specified group."
+
+command.description.group.option.set:
+  ru: "Устанавливает опцию группе."
+  en: "Sets an option for a group."
+
+command.description.group.option:
+  ru: "Показывает значение опции группы."
+  en: "Shows the value of a group option."
 
 command.description.group.parent.info:
   ru: "Показывает родительскую группу указанной группы."
@@ -1657,6 +1683,15 @@ command.error.group.not_found:
   # {0} - Group name
   ru: "{{darkblue}}[Permissions] {{default}}Группа {{red}}'{0}' {{default}}не найдена."
   en: "{{darkblue}}[Permissions] {{default}}Group {{red}}'{0}' {{default}}not found."
+
+command.error.group.option.not_found:
+  # {0} - Group name, {1} - Option
+  ru: "{{darkblue}}[Permissions] {{default}}У группы {{red}}'{0}' {{default}}нет опции {{red}}'{1}'{{default}}."
+  en: "{{darkblue}}[Permissions] {{default}}Group {{red}}'{0}' {{default}}has no option {{red}}'{1}'{{default}}."
+
+command.error.option.invalid:
+  ru: "{darkblue}[Permissions] {default}Название опции не может быть пустым!"
+  en: "{darkblue}[Permissions] {default}Option name can't be empty!"
 
 command.error.group.child_not_found:
   # {0} - Group name

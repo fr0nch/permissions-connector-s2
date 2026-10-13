@@ -62,6 +62,20 @@ func registerGroupCommands(c *Commands) {
 		Description: "command.description.group.parent.set",
 		Example:     "command.example.group.parent.set",
 	})
+	c.addCommand("perms_group_set_option", CommandInfo{
+		Handler:     c.commandGroupOptionSet,
+		MinArgs:     3,
+		Permission:  "permissions.group.option.set",
+		Description: "command.description.group.option.set",
+		Example:     "command.example.group.option.set",
+	})
+	c.addCommand("perms_group_option", CommandInfo{
+		Handler:     c.commandGroupOption,
+		MinArgs:     2,
+		Permission:  "permissions.group.option",
+		Description: "command.description.group.option",
+		Example:     "command.example.group.option",
+	})
 	c.addCommand("perms_group_parent_info", CommandInfo{
 		Handler:     c.commandGroupParentInfo,
 		MinArgs:     1,
@@ -249,6 +263,80 @@ func (c *Commands) commandDeleteGroup(ctx *CommandContext) s2sdk.ResultType {
 			ctx.Caller.Name, ctx.Caller.SteamID64,
 			groupName,
 		)
+	}()
+
+	return s2sdk.ResultType_Continue
+}
+
+func (c *Commands) commandGroupOptionSet(ctx *CommandContext) s2sdk.ResultType {
+	go func() {
+		groupName := ctx.Args[0]
+		optionName := ctx.Args[1]
+		value := ctx.Args[2]
+
+		if strings.TrimSpace(groupName) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+			)
+			return
+		}
+
+		result := permissions.SetOptionGroup(c.pluginID, groupName, optionName, value, false)
+
+		var msg string
+		switch result {
+		case permissions.Status_Success:
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.option.set.success", []any{groupName, optionName, value})
+		case permissions.Status_GroupNotFound:
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName})
+		case permissions.Status_InvalidOptionName:
+			msg = t.Translate(ctx.Caller.Language, "command.error.option.invalid")
+		default:
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
+		}
+
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
+
+		c.log.Infof("Command: SetOptionGroup | Result: %v | Caller: %s[%d] | Group: %s | Option: %s | Value: %s",
+			result,
+			ctx.Caller.Name, ctx.Caller.SteamID64,
+			groupName,
+			optionName,
+			value,
+		)
+	}()
+
+	return s2sdk.ResultType_Continue
+}
+
+func (c *Commands) commandGroupOption(ctx *CommandContext) s2sdk.ResultType {
+	go func() {
+		groupName := ctx.Args[0]
+		optionName := ctx.Args[1]
+
+		if strings.TrimSpace(groupName) == "" {
+			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+			)
+			return
+		}
+
+		var value any
+		result := permissions.GetOptionGroup(groupName, optionName, &value)
+
+		var msg string
+		switch result {
+		case permissions.Status_Success:
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.group.option.info", []any{groupName, optionName, fmt.Sprint(value)})
+		case permissions.Status_OptionNotFound:
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.option.not_found", []any{groupName, optionName})
+		case permissions.Status_GroupNotFound:
+			msg = t.TranslateFormat(ctx.Caller.Language, "command.error.group.not_found", []any{groupName})
+		default:
+			msg = t.Translate(ctx.Caller.Language, "command.error.unknown")
+		}
+
+		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, msg)
 	}()
 
 	return s2sdk.ResultType_Continue
