@@ -243,9 +243,7 @@ func (c *Commands) commandPerms(ctx *CommandContext) s2sdk.ResultType {
 
 		for i := range data {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				fmt.Sprintf("%s - %s", data[i][0].(string),
-					t.Translate(ctx.Caller.Language, data[i][1].(string)),
-				),
+				fmt.Sprintf("%s - %s", data[i][0].(string), data[i][1].(string)),
 			)
 		}
 
@@ -267,6 +265,7 @@ func (c *Commands) commandReloadConfig(ctx *CommandContext) s2sdk.ResultType {
 	if err != nil {
 		c.log.Errorf("Error reload config: %v", err)
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Error reload config: "+err.Error())
+		return s2sdk.ResultType_Continue
 	}
 
 	c.config.Settings = cfg
