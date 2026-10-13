@@ -364,7 +364,7 @@ func ReplyToCommandCleared(caller int32, context s2sdk.ConCommandContext, messag
 		message = RemoveTags(message)
 	}
 
-	s2sdk.QueueTaskForNextFrame(printTask, []any{printReply, caller, message, int32(context)})
+	s2sdk.QueueTaskForNextFrame(taskCallback, []any{printReply, caller, message, int32(context)})
 }
 
 func PrintToConsole(playerSlot int32, message string) {
@@ -373,22 +373,22 @@ func PrintToConsole(playerSlot int32, message string) {
 		return
 	}
 
-	s2sdk.QueueTaskForNextFrame(printTask, []any{printConsole, playerSlot, message, int32(0)})
+	s2sdk.QueueTaskForNextFrame(taskCallback, []any{printConsole, playerSlot, message, int32(0)})
 }
 
 func PrintToChat(playerSlot int32, message string) {
-	s2sdk.QueueTaskForNextFrame(printTask, []any{printChat, playerSlot, message, int32(0)})
+	s2sdk.QueueTaskForNextFrame(taskCallback, []any{printChat, playerSlot, message, int32(0)})
 }
 
 func PrintToChatColored(playerSlot int32, message string) {
-	s2sdk.QueueTaskForNextFrame(printTask, []any{printChatColored, playerSlot, message, int32(0)})
+	s2sdk.QueueTaskForNextFrame(taskCallback, []any{printChatColored, playerSlot, message, int32(0)})
 }
 
 func PrintCentreHtml(playerSlot int32, message string, duration int32) {
-	s2sdk.QueueTaskForNextFrame(printTask, []any{printHint, playerSlot, message, duration})
+	s2sdk.QueueTaskForNextFrame(taskCallback, []any{printHint, playerSlot, message, duration})
 }
 
-func printTask(userData []any) {
+func taskCallback(userData []any) {
 	playerSlot, message, extra := userData[1].(int32), userData[2].(string), userData[3].(int32)
 
 	switch userData[0].(int32) {
