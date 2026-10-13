@@ -57,9 +57,13 @@ type CommandContext struct {
 	ConCommandContext s2sdk.ConCommandContext
 	Args              []string
 	Info              *CommandInfo
-	Example           string
+	TimeMode          config.TimeMode
 
 	Caller *Player
+}
+
+func (ctx *CommandContext) Example() string {
+	return utils.TranslateExample(ctx.Caller.Language, ctx.Info.Example, ctx.TimeMode)
 }
 
 type CommandHandler func(ctx *CommandContext) s2sdk.ResultType
@@ -146,8 +150,8 @@ func (c *Commands) conCommandCallback(caller int32, context s2sdk.ConCommandCont
 		Args:              arguments[1:],
 		Caller:            NewPlayer(caller),
 		Info:              &command,
+		TimeMode:          c.config.Settings.TimeMode,
 	}
-	ctx.Example = utils.TranslateExample(ctx.Caller.Language, command.Example, c.config.Settings.TimeMode)
 
 	if caller > -1 {
 		if command.Permission != "" && permissions.HasPermission(ctx.Caller.SteamID64, command.Permission) != permissions.Status_Allow {
@@ -161,7 +165,7 @@ func (c *Commands) conCommandCallback(caller int32, context s2sdk.ConCommandCont
 	argsCount := len(ctx.Args)
 	if argsCount < command.MinArgs {
 		utils.ReplyToCommandCleared(caller, context,
-			t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_arguments_count", []any{ctx.Example}),
+			t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_arguments_count", []any{ctx.Example()}),
 		)
 		return s2sdk.ResultType_Handled
 	}
@@ -174,16 +178,16 @@ func findPlayerTarget(ctx *CommandContext) (*Player, error) {
 	clientCounts := len(clients)
 
 	if clientCounts == 0 {
-		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_found", []any{ctx.Example}))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_found", []any{ctx.Example()}))
 	}
 
 	if clientCounts > 1 {
-		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.multiple_found", []any{ctx.Example}))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.multiple_found", []any{ctx.Example()}))
 	}
 
 	target := NewPlayer(clients[0])
 	if target == nil {
-		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_valid", []any{ctx.Example}))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_valid", []any{ctx.Example()}))
 	}
 
 	return target, canAffectUser(ctx.Caller, target)
