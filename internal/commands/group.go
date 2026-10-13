@@ -119,7 +119,7 @@ func (c *Commands) commandGroupInfo(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -188,7 +188,7 @@ func (c *Commands) commandCreateGroup(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -196,7 +196,7 @@ func (c *Commands) commandCreateGroup(ctx *CommandContext) s2sdk.ResultType {
 		priority, err := strconv.ParseInt(ctx.Args[1], 10, 32)
 		if err != nil {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_number", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_number", []any{ctx.Example}),
 			)
 			return
 		}
@@ -239,7 +239,7 @@ func (c *Commands) commandDeleteGroup(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -276,7 +276,7 @@ func (c *Commands) commandGroupOptionSet(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -316,7 +316,7 @@ func (c *Commands) commandGroupOption(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -349,14 +349,14 @@ func (c *Commands) commandGroupParentSet(ctx *CommandContext) s2sdk.ResultType {
 
 		if strings.TrimSpace(childName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(parentName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -396,7 +396,7 @@ func (c *Commands) commandGroupParentInfo(ctx *CommandContext) s2sdk.ResultType 
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -434,14 +434,14 @@ func (c *Commands) commandGroupParentCheck(ctx *CommandContext) s2sdk.ResultType
 
 		if strings.TrimSpace(childName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(parentName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -499,7 +499,7 @@ func (c *Commands) commandGroupPermissions(ctx *CommandContext) s2sdk.ResultType
 
 		if strings.TrimSpace(group) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
@@ -539,14 +539,14 @@ func (c *Commands) commandGroupPermissionCheck(ctx *CommandContext) s2sdk.Result
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{ctx.Example}),
 			)
 			return
 		}
@@ -625,14 +625,14 @@ func (c *Commands) commandGroupPermissionAdd(ctx *CommandContext) s2sdk.ResultTy
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{ctx.Example}),
 			)
 			return
 		}
@@ -672,14 +672,14 @@ func (c *Commands) commandGroupPermissionSet(ctx *CommandContext) s2sdk.ResultTy
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{ctx.Example}),
 			)
 			return
 		}
@@ -719,14 +719,14 @@ func (c *Commands) commandGroupPermissionRemove(ctx *CommandContext) s2sdk.Resul
 
 		if strings.TrimSpace(groupName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.group.empty_name", []any{ctx.Example}),
 			)
 			return
 		}
 
 		if strings.TrimSpace(permName) == "" {
 			utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext,
-				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}),
+				t.TranslateFormat(ctx.Caller.Language, "command.error.permission.empty", []any{ctx.Example}),
 			)
 			return
 		}

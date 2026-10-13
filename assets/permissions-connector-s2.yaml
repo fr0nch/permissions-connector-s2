@@ -1371,24 +1371,40 @@ command.example.user.group.info:
   en: "perms_user_groups <#userid|$steamid64|&account_id|name>"
 
 command.example.user.permission.add:
-  ru: "perms_user_add_permission <#userid|$steamid64|&account_id|имя_игрока> <право> <время_действия> (в секундах)"
-  en: "perms_user_add_permission <#userid|$steamid64|&account_id|username> <permission> <duration_time> (seconds)"
+  ru: "perms_user_add_permission <#userid|$steamid64|&account_id|имя_игрока> <право> <время_действия> ({0})"
+  en: "perms_user_add_permission <#userid|$steamid64|&account_id|username> <permission> <duration_time> ({0})"
 
 command.example.user.permission.set:
-  ru: "perms_user_set_permission <#userid|$steamid64|&account_id|имя_игрока> <право> <время_действия> (в секундах)"
-  en: "perms_user_set_permission <#userid|$steamid64|&account_id|username> <permission> <duration_time> (seconds)"
+  ru: "perms_user_set_permission <#userid|$steamid64|&account_id|имя_игрока> <право> <время_действия> ({0})"
+  en: "perms_user_set_permission <#userid|$steamid64|&account_id|username> <permission> <duration_time> ({0})"
 
 command.example.user.permission.remove:
   ru: "perms_user_remove_permission <#userid|$steamid64|&account_id|имя_игрока> <право>"
   en: "perms_user_remove_permission <#userid|$steamid64|&account_id|username> <permission>"
 
 command.example.user.group.add:
-  ru: "perms_user_add_group <#userid|$steamid64|&account_id|имя_игрока> <группа> <время действия> (в секундах)"
-  en: "perms_user_add_group <#userid|$steamid64|&account_id|username> <group_name> <duration_time> (seconds)"
+  ru: "perms_user_add_group <#userid|$steamid64|&account_id|имя_игрока> <группа> <время действия> ({0})"
+  en: "perms_user_add_group <#userid|$steamid64|&account_id|username> <group_name> <duration_time> ({0})"
 
 command.example.user.group.set:
-  ru: "perms_user_set_group <#userid|$steamid64|&account_id|имя_игрока> <группа> <время действия> (в секундах)"
-  en: "perms_user_set_group <#userid|$steamid64|&account_id|username> <group_name> <duration_time> (seconds)"
+  ru: "perms_user_set_group <#userid|$steamid64|&account_id|имя_игрока> <группа> <время действия> ({0})"
+  en: "perms_user_set_group <#userid|$steamid64|&account_id|username> <group_name> <duration_time> ({0})"
+
+command.example.time_unit.seconds:
+  ru: "в секундах"
+  en: "seconds"
+
+command.example.time_unit.minutes:
+  ru: "в минутах"
+  en: "minutes"
+
+command.example.time_unit.hours:
+  ru: "в часах"
+  en: "hours"
+
+command.example.time_unit.days:
+  ru: "в днях"
+  en: "days"
 
 command.example.user.group.remove:
   ru: "perms_user_remove_group <#userid|$steamid64|&account_id|имя_игрока> <название_группы>"

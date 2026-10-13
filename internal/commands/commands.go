@@ -57,6 +57,7 @@ type CommandContext struct {
 	ConCommandContext s2sdk.ConCommandContext
 	Args              []string
 	Info              *CommandInfo
+	Example           string
 
 	Caller *Player
 }
@@ -146,6 +147,7 @@ func (c *Commands) conCommandCallback(caller int32, context s2sdk.ConCommandCont
 		Caller:            NewPlayer(caller),
 		Info:              &command,
 	}
+	ctx.Example = utils.TranslateExample(ctx.Caller.Language, command.Example, c.config.Settings.TimeMode)
 
 	if caller > -1 {
 		if command.Permission != "" && permissions.HasPermission(ctx.Caller.SteamID64, command.Permission) != permissions.Status_Allow {
@@ -159,7 +161,7 @@ func (c *Commands) conCommandCallback(caller int32, context s2sdk.ConCommandCont
 	argsCount := len(ctx.Args)
 	if argsCount < command.MinArgs {
 		utils.ReplyToCommandCleared(caller, context,
-			t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_arguments_count", []any{t.Translate(ctx.Caller.Language, command.Example)}),
+			t.TranslateFormat(ctx.Caller.Language, "command.error.invalid_arguments_count", []any{ctx.Example}),
 		)
 		return s2sdk.ResultType_Handled
 	}
@@ -172,16 +174,16 @@ func findPlayerTarget(ctx *CommandContext) (*Player, error) {
 	clientCounts := len(clients)
 
 	if clientCounts == 0 {
-		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_found", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_found", []any{ctx.Example}))
 	}
 
 	if clientCounts > 1 {
-		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.multiple_found", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.multiple_found", []any{ctx.Example}))
 	}
 
 	target := NewPlayer(clients[0])
 	if target == nil {
-		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_valid", []any{t.Translate(ctx.Caller.Language, ctx.Info.Example)}))
+		return nil, errors.New(t.TranslateFormat(ctx.Caller.Language, "command.error.user.not_valid", []any{ctx.Example}))
 	}
 
 	return target, canAffectUser(ctx.Caller, target)
@@ -224,7 +226,7 @@ func (c *Commands) commandPerms(ctx *CommandContext) s2sdk.ResultType {
 			[]any{
 				name,
 				t.Translate(ctx.Caller.Language, c.handlers[name].Description),
-				t.Translate(ctx.Caller.Language, c.handlers[name].Example),
+				utils.TranslateExample(ctx.Caller.Language, c.handlers[name].Example, c.config.Settings.TimeMode),
 			},
 		)
 	}
@@ -261,17 +263,7 @@ func (c *Commands) commandPerms(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandReloadConfig(ctx *CommandContext) s2sdk.ResultType {
-	cfg, err := config.LoadConfig("permissions", "connector.yml",
-		config.Settings{
-			NotifyMode: config.NotifyMode{
-				Console: true,
-				Chat:    true,
-				Hint:    true,
-			},
-			TimeMode:     0,
-			HintDuration: 5,
-		},
-	)
+	cfg, err := config.LoadConfig("permissions", "connector.yml", config.DefaultSettings())
 	if err != nil {
 		c.log.Errorf("Error reload config: %v", err)
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Error reload config: "+err.Error())

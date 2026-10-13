@@ -38,21 +38,7 @@ func (p *PermsConnectorPlugin) OnPluginStart() error {
 	}
 
 	p.config = config.NewConfig()
-	p.config.Settings, err = config.LoadConfig("permissions", "connector.yml",
-		config.Settings{
-			NotifyMode: config.NotifyMode{
-				Console: true,
-				Chat:    true,
-				Hint:    true,
-			},
-			HintDuration:        5,
-			TimeMode:            0,
-			AbbreviateTime:      false,
-			FormatTimestamp:     "2006-01-02 15:04:05",
-			DisplayActiveGroups: true,
-			HiddenGroups:        []string{"Default"},
-		},
-	)
+	p.config.Settings, err = config.LoadConfig("permissions", "connector.yml", config.DefaultSettings())
 
 	const translationFile = "permissions-connector-s2.yaml"
 	if err := t.LoadTranslation([]string{

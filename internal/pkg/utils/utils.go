@@ -80,6 +80,20 @@ func TimeToSeconds(time uint64, timeMode config.TimeMode) uint64 {
 	}
 }
 
+func TranslateExample(lang string, key string, timeMode config.TimeMode) string {
+	unitKey := "command.example.time_unit.seconds"
+	switch timeMode {
+	case config.Minutes:
+		unitKey = "command.example.time_unit.minutes"
+	case config.Hours:
+		unitKey = "command.example.time_unit.hours"
+	case config.Days:
+		unitKey = "command.example.time_unit.days"
+	}
+
+	return t.TranslateFormat(lang, key, []any{t.Translate(lang, unitKey)})
+}
+
 type GroupsOrNodes struct {
 	Name      string
 	Timestamp int64
