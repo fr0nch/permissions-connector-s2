@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.2...v0.1.3) (2026-10-14)
+
+
+### Bug Fixes
+
+* create releases only on push to main ([02b85ed](https://github.com/fr0nch/permissions-connector-s2/commit/02b85ed84f59bba95b332b14a2aab013e0e942f9))
+* revert release-please push-only condition ([d041cbd](https://github.com/fr0nch/permissions-connector-s2/commit/d041cbd4ff67523c87c8621e086edaf5345a72b3))
+
 ## [0.1.2](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.1...v0.1.2) (2026-10-14)
 
 
