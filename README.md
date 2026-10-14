@@ -13,7 +13,7 @@ Players are targeted by `#userid`, `$steamid64`, `&account_id` or name. Duration
 
 | Command | Permission | Description |
 |---|---|---|
-| `perms` | — | List of available commands |
+| `perms` | - | List of available commands |
 | `perms_reload_cfg` | `permissions.reload_config` | Reload the config |
 | `perms_reload_translations` | `permissions.reload_translations` | Reload the translations |
 

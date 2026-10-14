@@ -6,14 +6,14 @@
 
 ## Команды
 
-Игрок указывается через `#userid`, `$steamid64`, `&account_id` или ник. Длительность — в единицах из `time_mode` (по умолчанию секунды).
+Игрок указывается через `#userid`, `$steamid64`, `&account_id` или ник. Длительность в единицах из `time_mode` (по умолчанию секунды).
 
 <details>
 <summary><b>Общие</b></summary>
 
 | Команда | Право | Описание |
 |---|---|---|
-| `perms` | — | Список доступных команд |
+| `perms` | - | Список доступных команд |
 | `perms_reload_cfg` | `permissions.reload_config` | Перезагрузить конфиг |
 | `perms_reload_translations` | `permissions.reload_translations` | Перезагрузить переводы |
 
@@ -77,7 +77,7 @@
 
 ## Переводы
 
-`permissions-connector-s2.yaml` (английский и русский) поставляется рядом с манифестом плагина. Чтобы переопределить его, положите свою копию в `translations/`, `configs/` или `data/` Plugify. Перезагрузка — `perms_reload_translations`.
+`permissions-connector-s2.yaml` (английский и русский) поставляется рядом с манифестом плагина. Чтобы переопределить его, положите свою копию в `translations/`, `configs/` или `data/` Plugify. Перезагрузка - `perms_reload_translations`.
 
 ## Зависимости
 
