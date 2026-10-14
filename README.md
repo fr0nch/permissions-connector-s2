@@ -8,7 +8,7 @@ A [Plugify](https://github.com/untrustedmodders/plugify) plugin that connects th
 
 Players are targeted by `#userid`, `$steamid64`, `&account_id` or name. Durations are in the unit set by `time_mode` (seconds by default).
 
-<details>
+<details open>
 <summary><b>General</b></summary>
 
 | Command | Permission | Description |

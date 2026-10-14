@@ -8,7 +8,7 @@
 
 Игрок указывается через `#userid`, `$steamid64`, `&account_id` или ник. Длительность в единицах из `time_mode` (по умолчанию секунды).
 
-<details>
+<details open>
 <summary><b>Общие</b></summary>
 
 | Команда | Право | Описание |
