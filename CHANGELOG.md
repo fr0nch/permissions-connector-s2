@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.0...v0.1.1) (2026-10-14)
+
+
+### Bug Fixes
+
+* package download step failing without noarch packages ([aecee85](https://github.com/fr0nch/permissions-connector-s2/commit/aecee8558ecb17f9f1eaa518b1ade7c34d006c01))
+
 ## [0.1.0](https://github.com/fr0nch/permissions-connector-s2/compare/v0.0.1...v0.1.0) (2026-10-14)
 
 
