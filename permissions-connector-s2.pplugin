@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"name": "permissions_connector_s2",
 	"description": "Connector of permissions for Source2 SDK",
 	"author": "Fr4nch",

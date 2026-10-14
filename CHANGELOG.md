@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.1...v0.1.2) (2026-10-14)
+
+
+### Bug Fixes
+
+* update s2sdk ([f715e3d](https://github.com/fr0nch/permissions-connector-s2/commit/f715e3d4b0040ca4f5b054fc9681bde1f8b428e7))
+
 ## [0.1.1](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.0...v0.1.1) (2026-10-14)
 
 
