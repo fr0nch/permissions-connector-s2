@@ -51,7 +51,7 @@ func (p *PermsConnectorPlugin) OnClientAuthenticated(playerSlot int32, steamID u
 	go permissions.LoadUser(p.PluginID, steamID, s2sdk.GetClientName(playerSlot), false, false)
 }
 
-func (p *PermsConnectorPlugin) OnClientDisconnect(playerSlot int32) {
+func (p *PermsConnectorPlugin) OnClientDisconnect(playerSlot int32, reason s2sdk.NetworkDisconnectionReason) {
 	if s2sdk.IsFakeClient(playerSlot) || s2sdk.IsClientSourceTV(playerSlot) {
 		return
 	}

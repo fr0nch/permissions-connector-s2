@@ -6,6 +6,8 @@ github.com/fr0nch/go-plugify-permissions v1.0.5 h1:YMObbVWZNPLZzkW+X90Rb1uB/iDVJ
 github.com/fr0nch/go-plugify-permissions v1.0.5/go.mod h1:CJPquCetDHfpehp6BMA8kdJTJgVXA1rn9p9/DNSaQ6c=
 github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.24 h1:DmfPD6C9YZ1bG8y3fMRIk9O/sbLcpLIgKLxI1KgGZS8=
 github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.24/go.mod h1:3fTMJlJJxH79YphWS33DOQZBuxe+M0eQm/EZ1Avl/q8=
+github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.25 h1:ATp+AuUyaLCn/FgDPJDmLupPjyhVsiCB1lkw7O6F8HE=
+github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.25/go.mod h1:C2158GzIPHxssjCiTiXBKEjiRJzS/hsyPqjrLIlmT5E=
 github.com/fr0nch/go-plugify-translations v1.0.2 h1:6VDwXisMa4Rg5xdoi6b2Hy5eI8O13Cvr/dwfffXWGKU=
 github.com/fr0nch/go-plugify-translations v1.0.2/go.mod h1:EpaBl6TIuwFCnQLv1PqdtDllbLqyS8LFcLQHuFqWUsM=
 github.com/fr0nch/logger v0.1.6 h1:vdXMj5rmeDNEwIyRrz5z/lpzG99lAMF1UjloPOq34vg=
@@ -20,6 +22,8 @@ golang.org/x/sync v0.23.0 h1:KameEIfc1IkluZyXWLn39Wd4tURc6GbCiISGiZm2bQk=
 golang.org/x/sync v0.23.0/go.mod h1:sUUOizhqBxiL6pEWpqNLUiaJn1ShEbZ6BBqskPbjZm0=
 golang.org/x/tools v0.50.0 h1:c2ifzfcuY7L90lZ2aKd8S4K2NpASF08SZx9ZuJkHmSU=
 golang.org/x/tools v0.50.0/go.mod h1:7ulVMw3831Mwi5EZD6RomGyffr4VFjuNYXf2BbCEAV0=
+golang.org/x/tools v0.51.0 h1:k4Xc/1Om9jwkBJBo4NVLMSARBoWtK10mx+W5BnXCeAI=
+golang.org/x/tools v0.51.0/go.mod h1:9eEncMayCV6zRMGhR5eZEC2iBx98qWcF1HZ9Z7wJOoA=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
