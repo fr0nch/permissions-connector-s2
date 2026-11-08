@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.3...v0.1.4) (2026-11-08)
+
+
+### Bug Fixes
+
+* clean up users on session end instead of disconnect ([b5db642](https://github.com/fr0nch/permissions-connector-s2/commit/b5db6426d4080af3eafa91de07e03082ce19a6e0))
+* require s2sdk 3.2.0 for session listeners ([9620631](https://github.com/fr0nch/permissions-connector-s2/commit/96206318684dd6d6830e8a9d8eda859e2b02412f))
+
 ## [0.1.3](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.2...v0.1.3) (2026-10-14)
 
 
