@@ -14,7 +14,7 @@ func (p *PermsConnectorPlugin) RegisterEvents() {
 	s2sdk.OnMapEnd_Register(p.OnMapEnd)
 
 	s2sdk.OnClientAuthenticated_Register(p.OnClientAuthenticated)
-	s2sdk.OnClientDisconnect_Register(p.OnClientDisconnect)
+	s2sdk.OnClientSessionEnd_Register(p.OnClientSessionEnd)
 
 	permissions.OnUserLoaded_Register(p.OnUserLoaded)
 
@@ -44,35 +44,48 @@ func (p *PermsConnectorPlugin) OnMapEnd() {
 func (p *PermsConnectorPlugin) OnClientAuthenticated(playerSlot int32, steamID uint64) {
 	p.log.Debugf("Client %s authenticated", s2sdk.GetClientName(playerSlot))
 
-	if s2sdk.IsFakeClient(playerSlot) || s2sdk.IsClientSourceTV(playerSlot) {
-		return
-	}
-
 	go permissions.LoadUser(p.PluginID, steamID, s2sdk.GetClientName(playerSlot), false, false)
 }
 
-func (p *PermsConnectorPlugin) OnClientDisconnect(playerSlot int32, reason s2sdk.NetworkDisconnectionReason) {
+func (p *PermsConnectorPlugin) OnClientSessionEnd(playerSlot int32, reason s2sdk.NetworkDisconnectionReason) {
 	if s2sdk.IsFakeClient(playerSlot) || s2sdk.IsClientSourceTV(playerSlot) {
 		return
 	}
 
-	s2sdk.KillsTimer(p.loadedUserTimers[playerSlot])
-	p.loadedUserTimers[playerSlot] = 0
+	steamID := s2sdk.GetClientSteamID64(playerSlot)
 
-	permissions.DeleteUser(p.PluginID, s2sdk.GetClientSteamID64(playerSlot))
+	if p.loadedUserTimers[steamID] != 0 {
+		s2sdk.KillsTimer(p.loadedUserTimers[steamID])
+		delete(p.loadedUserTimers, steamID)
+	}
+
+	permissions.DeleteUser(p.PluginID, steamID)
 }
 
 func (p *PermsConnectorPlugin) OnUserLoaded(pluginID int64, targetID uint64, playerState permissions.PlayerState) {
+	s2sdk.QueueTaskForNextFrame(p.userLoadedTask, []any{pluginID, targetID})
+}
+
+func (p *PermsConnectorPlugin) userLoadedTask(userData []any) {
+	pluginID := userData[0].(int64)
+	targetID := userData[1].(uint64)
+	playerSlot := utils.GetPlayerSlotBySteamID64(targetID)
+
+	if playerSlot < 0 {
+		if pluginID == p.PluginID {
+			permissions.DeleteUser(p.PluginID, targetID)
+		}
+		return
+	}
+
 	if !p.config.Settings.DisplayActiveGroups {
 		return
 	}
 
-	s2sdk.QueueTaskForNextFrame(p.userLoadedTask, []any{targetID})
-}
-
-func (p *PermsConnectorPlugin) userLoadedTask(userData []any) {
-	targetID := userData[0].(uint64)
-	playerSlot := utils.GetPlayerSlotBySteamID64(targetID)
+	if p.loadedUserTimers[targetID] != 0 {
+		s2sdk.KillsTimer(p.loadedUserTimers[targetID])
+		delete(p.loadedUserTimers, targetID)
+	}
 
 	var groups []string
 	permissions.GetUserGroups(targetID, &groups)
@@ -84,7 +97,7 @@ func (p *PermsConnectorPlugin) userLoadedTask(userData []any) {
 	p.log.Debugf("Loaded user '%d' | Groups: '%v'", targetID, groups)
 
 	if !s2sdk.IsClientInGame(playerSlot) || s2sdk.GetClientTeam(playerSlot) == s2sdk.CSTeam_None {
-		p.loadedUserTimers[playerSlot] = s2sdk.CreateTimer(1.0, p.timerPostUserLoaded, s2sdk.TimerFlag_Repeat, []any{targetID, groups})
+		p.loadedUserTimers[targetID] = s2sdk.CreateTimer(1.0, p.timerPostUserLoaded, s2sdk.TimerFlag_Repeat, []any{targetID, groups})
 		return
 	}
 
@@ -102,7 +115,7 @@ func (p *PermsConnectorPlugin) timerPostUserLoaded(timer uint32, userData []any)
 	p.DisplayActiveGroups(playerSlot, userData[1].([]string))
 
 	s2sdk.KillsTimer(s2sdk.TimerId(timer))
-	p.loadedUserTimers[playerSlot] = 0
+	delete(p.loadedUserTimers, clientSteamID)
 }
 
 func (p *PermsConnectorPlugin) OnUserPermissionChange(pluginID int64, action permissions.Action, targetID uint64, perm string, oldState permissions.Status, newState permissions.Status, oldTimestamp int64, newTimestamp int64) {

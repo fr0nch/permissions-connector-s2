@@ -18,13 +18,15 @@ type PermsConnectorPlugin struct {
 	config   *config.Config
 	commands *commands.Commands
 
-	loadedUserTimers [64]s2sdk.TimerId
+	loadedUserTimers map[uint64]s2sdk.TimerId
 
 	log *logger.Logger
 }
 
 func NewPermsConnectorPlugin() *PermsConnectorPlugin {
-	return &PermsConnectorPlugin{}
+	return &PermsConnectorPlugin{
+		loadedUserTimers: make(map[uint64]s2sdk.TimerId),
+	}
 }
 
 func (p *PermsConnectorPlugin) OnPluginStart() error {
