@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.4...v0.1.5) (2026-11-09)
+
+
+### Bug Fixes
+
+* build with go 1.27 ([7bc12da](https://github.com/fr0nch/permissions-connector-s2/commit/7bc12da606e9300527b989a005c9225dc7f16ce0))
+
 ## [0.1.4](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.3...v0.1.4) (2026-11-08)
 
 
