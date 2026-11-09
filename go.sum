@@ -10,6 +10,8 @@ github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.25 h1:ATp+AuUyaLCn/FgDPJDmLupPjyhVsi
 github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.25/go.mod h1:C2158GzIPHxssjCiTiXBKEjiRJzS/hsyPqjrLIlmT5E=
 github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.36 h1:255wfZsO0c90xgNRDRTetHXXoTV285d/NJLaXtRKvg4=
 github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.36/go.mod h1:rLk1wHXSN23UQSlXsuRIGeYtvJ/hay8KvnALpr6pHCQ=
+github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.37 h1:Nd5wpim7BJsAq0R8pYrGRd57O+efaheBzvh+8FbpFc4=
+github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.37/go.mod h1:rLk1wHXSN23UQSlXsuRIGeYtvJ/hay8KvnALpr6pHCQ=
 github.com/fr0nch/go-plugify-translations v1.0.2 h1:6VDwXisMa4Rg5xdoi6b2Hy5eI8O13Cvr/dwfffXWGKU=
 github.com/fr0nch/go-plugify-translations v1.0.2/go.mod h1:EpaBl6TIuwFCnQLv1PqdtDllbLqyS8LFcLQHuFqWUsM=
 github.com/fr0nch/logger v0.1.6 h1:vdXMj5rmeDNEwIyRrz5z/lpzG99lAMF1UjloPOq34vg=

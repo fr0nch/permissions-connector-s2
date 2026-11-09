@@ -4,7 +4,7 @@ go 1.27.0
 
 require (
 	github.com/fr0nch/go-plugify-permissions v1.0.5
-	github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.36
+	github.com/fr0nch/go-plugify-s2sdk/v2 v2.10.37
 	github.com/fr0nch/go-plugify-translations v1.0.2
 	github.com/fr0nch/logger v0.1.7
 	github.com/untrustedmodders/go-plugify v1.10.6
