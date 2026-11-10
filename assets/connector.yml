@@ -1,0 +1,40 @@
+# Controls how players are notified when permissions or groups are granted or removed.
+# - console: Sends a message to the player's console.
+# - chat: Sends a message in the in-game chat.
+# - hint: Displays a hint notification on the player's screen.
+notify_mode:
+    console: true
+    chat: true
+    hint: true
+
+# Duration (in seconds) for which hint notifications are displayed on the player's screen.
+# - Only applies if hint notifications are enabled in notify_mode.
+hint_duration: 5
+
+# Specifies the unit of the duration argument in commands.
+#  
+# - Possible options:
+#   |=> 0 (Seconds)
+#   |=> 1 (Minutes)
+#   |=> 2 (Hours)
+#   |=> 3 (Days)
+#  
+# - Applies to perms_user_add_permission, perms_user_set_permission, perms_user_add_group and perms_user_set_group.
+time_mode: 0
+
+# # Whether to use abbreviated time units (e.g., '5 min.' instead of '5 minutes').
+# - If set to true, units will be: d., h., min., sec.
+# - If set to false, units will use full localized forms with proper declension.
+abbreviate_time: false
+
+# The format used for displaying date and time.
+# - Uses the Go formatting standard (t.Format): https://pkg.go.dev/time#pkg-constants
+# - Example: 2006-01-02 15:04:05
+format_timestamp: "2006-01-02 15:04:05"
+
+# Determines whether to display the list of active groups to the player when they join the server.
+display_active_groups: true
+
+# A list of groups that will be hidden from the player (e.g., to hide the default group).
+hidden_groups:
+    - Default
