@@ -113,7 +113,8 @@ jobs:
         run: |
           # The version in the manifest is set by release-please in the release PR
           cp ${{ env.MANIFEST }} build/
-          cp assets/permissions-connector-s2.yaml build/
+          cp assets/settings.yaml build/permissions_connector_s2.settings.yaml
+          cp assets/translations.yaml build/permissions_connector_s2.translations.yaml
 
           # Cleanup dev files
           find build/ -type f \( -name "*.h" -o -name "*.exp" -o -name "*.ilk" -o -name "*.lib" -o -name "*.pdb" \) -delete

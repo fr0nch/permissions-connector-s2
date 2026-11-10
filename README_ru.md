@@ -63,7 +63,7 @@
 
 ## Настройка
 
-Конфиг создаётся при первом запуске: `configs/permissions/connector.yml`.
+Конфиг по умолчанию `permissions_connector_s2.settings.yaml` лежит рядом с манифестом плагина: он создаётся при первом запуске, если его нет, и заменяется при обновлении. Чтобы изменить настройки, положите свою копию в `configs/permissions/permissions_connector_s2.settings.yaml`: её значения переопределяют значения по умолчанию, не указанные ключи остаются по умолчанию.
 
 | Параметр | Описание |
 |---|---|
@@ -77,7 +77,7 @@
 
 ## Переводы
 
-`permissions-connector-s2.yaml` (английский и русский) поставляется рядом с манифестом плагина. Чтобы переопределить его, положите свою копию в `translations/`, `configs/` или `data/` Plugify. Перезагрузка - `perms_reload_translations`.
+`permissions_connector_s2.translations.yaml` (английский и русский) поставляется рядом с манифестом плагина. Чтобы переопределить его, положите свою копию в `configs/permissions/` или `data/permissions/` Plugify. Перезагрузка - `perms_reload_translations`.
 
 ## Зависимости
 
@@ -106,7 +106,7 @@ conda install -c https://fr0nch.github.io/permissions-connector-s2/ permissions-
 ./build.sh [debug|release] --docker
 ```
 
-Результат в обоих случаях: `build/<mode>/libpermissions-connector-s2.so`, `build/<mode>/permissions-connector-s2.pplugin` и `build/<mode>/permissions-connector-s2.yaml`.
+Результат в обоих случаях: `build/<mode>/libpermissions-connector-s2.so`, `build/<mode>/permissions-connector-s2.pplugin`, `build/<mode>/permissions_connector_s2.settings.yaml` и `build/<mode>/permissions_connector_s2.translations.yaml`.
 
 ## Лицензия
 

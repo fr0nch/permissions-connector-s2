@@ -77,7 +77,8 @@ type CommandInfo struct {
 }
 
 type Commands struct {
-	pluginID int64
+	pluginID  int64
+	pluginDir string
 
 	config *config.Config
 	log    *logger.Logger
@@ -93,11 +94,12 @@ func (c *Commands) addCommand(name string, info CommandInfo) {
 	c.handlers[name] = info
 }
 
-func NewCommands(pluginID int64, config *config.Config, log *logger.Logger) *Commands {
+func NewCommands(pluginID int64, pluginDir string, config *config.Config, log *logger.Logger) *Commands {
 	c := &Commands{
-		pluginID: pluginID,
-		config:   config,
-		log:      log,
+		pluginID:  pluginID,
+		pluginDir: pluginDir,
+		config:    config,
+		log:       log,
 	}
 
 	c.addCommand("perms", CommandInfo{
@@ -265,7 +267,7 @@ func (c *Commands) commandPerms(ctx *CommandContext) s2sdk.ResultType {
 }
 
 func (c *Commands) commandReloadConfig(ctx *CommandContext) s2sdk.ResultType {
-	cfg, err := config.LoadConfig("permissions", "connector.yml", config.DefaultSettings())
+	cfg, err := config.LoadConfig(c.pluginDir, "permissions", "permissions_connector_s2.settings.yaml", config.DefaultSettings())
 	if err != nil {
 		c.log.Errorf("Error reload config: %v", err)
 		utils.ReplyToCommandCleared(ctx.Caller.Slot, ctx.ConCommandContext, "[Permissions] Error reload config: "+err.Error())

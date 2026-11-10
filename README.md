@@ -63,7 +63,7 @@ Players are targeted by `#userid`, `$steamid64`, `&account_id` or name. Duration
 
 ## Configuration
 
-The config is created on the first start: `configs/permissions/connector.yml`.
+The default config `permissions_connector_s2.settings.yaml` lies next to the plugin manifest; it is created on the first start if missing and replaced on update. To change settings, put your copy into `configs/permissions/permissions_connector_s2.settings.yaml`: its values override the defaults, keys left out keep the default values.
 
 | Setting | Description |
 |---|---|
@@ -77,7 +77,7 @@ The config is created on the first start: `configs/permissions/connector.yml`.
 
 ## Translations
 
-`permissions-connector-s2.yaml` (English and Russian) is shipped next to the plugin manifest. To override it, put your copy into `translations/`, `configs/` or `data/` of Plugify. Reload with `perms_reload_translations`.
+`permissions_connector_s2.translations.yaml` (English and Russian) is shipped next to the plugin manifest. To override it, put your copy into `configs/permissions/` or `data/permissions/` of Plugify. Reload with `perms_reload_translations`.
 
 ## Dependencies
 
@@ -106,7 +106,7 @@ Via Docker (the image is built automatically on first run):
 ./build.sh [debug|release] --docker
 ```
 
-Output in both cases: `build/<mode>/libpermissions-connector-s2.so`, `build/<mode>/permissions-connector-s2.pplugin` and `build/<mode>/permissions-connector-s2.yaml`.
+Output in both cases: `build/<mode>/libpermissions-connector-s2.so`, `build/<mode>/permissions-connector-s2.pplugin`, `build/<mode>/permissions_connector_s2.settings.yaml` and `build/<mode>/permissions_connector_s2.translations.yaml`.
 
 ## License
 

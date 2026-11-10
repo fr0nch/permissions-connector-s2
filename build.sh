@@ -69,9 +69,11 @@ go build \
   -ldflags="$LDFLAGS" \
   -o "$OUTDIR/lib$FILENAME.so"
 
-cp assets/permissions-connector-s2.yaml "$OUTDIR/"
+cp assets/settings.yaml "$OUTDIR/$NAME.settings.yaml"
+cp assets/translations.yaml "$OUTDIR/$NAME.translations.yaml"
 
 echo "Output:"
 echo "$OUTDIR/lib$FILENAME.so"
 echo "$OUTDIR/$FILENAME.pplugin"
-echo "$OUTDIR/permissions-connector-s2.yaml"
+echo "$OUTDIR/$NAME.settings.yaml"
+echo "$OUTDIR/$NAME.translations.yaml"

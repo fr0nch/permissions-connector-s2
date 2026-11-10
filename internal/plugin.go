@@ -40,21 +40,20 @@ func (p *PermsConnectorPlugin) OnPluginStart() error {
 	}
 
 	p.config = config.NewConfig()
-	p.config.Settings, err = config.LoadConfig("permissions", "connector.yml", config.DefaultSettings())
+	p.config.Settings, err = config.LoadConfig(p.Plugin.Location(), "permissions", "permissions_connector_s2.settings.yaml", config.DefaultSettings())
 
-	const translationFile = "permissions-connector-s2.yaml"
+	const translationFile = "permissions_connector_s2.translations.yaml"
 	if err := t.LoadTranslation([]string{
 		filepath.Join(p.Plugin.Location(), translationFile),
-		filepath.Join(plugify.BaseDir(), "translations", translationFile),
-		filepath.Join(plugify.ConfigsDir(), translationFile),
-		filepath.Join(plugify.DataDir(), translationFile),
+		filepath.Join(plugify.ConfigsDir(), "permissions", translationFile),
+		filepath.Join(plugify.DataDir(), "permissions", translationFile),
 	}); err != "" {
 		p.log.Errorf("Error loading translations: %s", err)
 	}
 
 	//permissions.SetConnectorID(p.PluginID)
 
-	p.commands = commands.NewCommands(p.PluginID, p.config, p.log)
+	p.commands = commands.NewCommands(p.PluginID, p.Plugin.Location(), p.config, p.log)
 	p.commands.Register()
 
 	p.RegisterEvents()
