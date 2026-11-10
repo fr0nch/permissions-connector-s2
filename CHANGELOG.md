@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.5...v1.0.0) (2026-11-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* name config and translations after the plugin
+
+### Features
+
+* add default config ([c932cb8](https://github.com/fr0nch/permissions-connector-s2/commit/c932cb8c40f8b11a3bda1f35326d12fd0166e2dc))
+
+
+### Bug Fixes
+
+* name config and translations after the plugin ([4edd789](https://github.com/fr0nch/permissions-connector-s2/commit/4edd789c5c32dd76a80ff730ef52a23af24c9ea9))
+
 ## [0.1.5](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.4...v0.1.5) (2026-11-09)
 
 
