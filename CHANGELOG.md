@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/fr0nch/permissions-connector-s2/compare/v1.0.0...v1.0.1) (2026-11-17)
+
+
+### Bug Fixes
+
+* unregister listeners and commands on plugin end ([e95e93a](https://github.com/fr0nch/permissions-connector-s2/commit/e95e93a16d48514fff468fc38b623234059cde86))
+
 ## [1.0.0](https://github.com/fr0nch/permissions-connector-s2/compare/v0.1.5...v1.0.0) (2026-11-10)
 
 
