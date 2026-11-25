@@ -3,33 +3,49 @@ package internal
 import (
 	"permissions-connector-s2/internal/pkg/config"
 	"permissions-connector-s2/internal/pkg/utils"
+	"strings"
 
 	s2sdk "github.com/fr0nch/go-plugify-s2sdk/v2"
 	t "github.com/fr0nch/go-plugify-translations"
 )
 
+func translateWithFallback(language, key string, args []any, translate func(string, string, []any) string) string {
+	msg := translate(language, key, args)
+	if strings.TrimSpace(msg) == "" && language != "en" {
+		return translate("en", key, args)
+	}
+	return msg
+}
+
+func hasVisibleText(text string) bool {
+	return strings.TrimSpace(utils.RemoveTags(text)) != ""
+}
+
 func (p *PermsConnectorPlugin) SendTranslatedNotifyPlayer(playerSlot int32, flags config.NotifyFlag, translationKey, language string, args ...any) {
 	var msg string
 	if flags&(config.Console|config.Chat) != 0 {
-		msg = t.TranslateFormat(language, translationKey, args)
+		msg = translateWithFallback(language, translationKey, args, t.TranslateFormat)
 		p.SendNotifyPlayer(playerSlot, config.Console|config.Chat, msg)
 	}
 	if flags&config.Hint != 0 {
-		msg = t.TranslateFormat(language, translationKey+".hint", args)
+		msg = translateWithFallback(language, translationKey+".hint", args, t.TranslateFormat)
 		p.SendNotifyPlayer(playerSlot, config.Hint, msg)
 	}
 }
 
 func (p *PermsConnectorPlugin) SendNotifyPlayer(playerSlot int32, flags config.NotifyFlag, text string) {
 	if flags&config.Console != 0 {
-		msg := utils.RemoveTags(text)
-		utils.PrintToConsole(playerSlot, msg)
+		if msg := utils.RemoveTags(text); strings.TrimSpace(msg) != "" {
+			utils.PrintToConsole(playerSlot, msg)
+		}
 	}
-	if flags&config.Chat != 0 {
+	if flags&config.Chat != 0 && hasVisibleText(text) {
 		utils.PrintToChatColored(playerSlot, text)
 	}
 	if flags&config.Hint != 0 {
-		utils.PrintCentreHtml(playerSlot, utils.RemoveTags(text), p.config.Settings.HintDuration)
+		if msg := utils.RemoveTags(text); strings.TrimSpace(msg) != "" {
+			utils.PrintCentreHtml(playerSlot, msg, p.config.Settings.HintDuration)
+		}
 	}
 }
 
